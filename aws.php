@@ -8,8 +8,8 @@ use Aws\S3\S3Client;
 //Set up the S3 client to be used in the rest of the application.
 $s3Client = S3Client::factory(array(
     'credentials' => array(
-        'key'    => 'AKIAJTOD5VOFVD32ZCNQ',
-        'secret' => '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',
+        'key'    => 'key_goes_here',
+        'secret' => 'secret_goes_here',
     )
 ));
 
