@@ -1,104 +1,135 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
-<meta name="description" content="Cloud PHP Music Collaboration Project" />
-<meta name="keywords" content="cloud, php, project" />
-<meta name="author" content="Jack Jamieson">
-<meta name="robots" content="index, follow">
-<title>Cloud PHP</title>
-<!-- jack, jamieson -->
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/style.css">
-    <script src="/player/audio.min.js"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-</head>
 
-<html>
+  <title>Harmony</title>
+  <head>
 
-<body>
-    
-    <script>    
-        //Init the player
-      audiojs.events.ready(function() {
-        var as = audiojs.createAll();
-      });
-    </script>
-    
-    
-	<nav class="navbar navbar-default">
- 		<div class="container">
-    			<div class="navbar-header">
+    <!-- css imports !-->
+    <?php include ('template/head.php'); ?>
 
-				<a class="navbar-brand" href="index.php">Harmony</a>
-			</div>
-			 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home<span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Sign in</a></li>
-</ul>
-  		</div>
-	</nav>
+  </head>
 
-	<div class="content">
-    <?php 
-        error_reporting(E_ALL);
-        ini_set( 'display_errors', 'On');// Turn on debugging.
-    
-        include ('aws.php');// Log in to AWS
+  <body>
 
-        $bucket = "com.cloud.php.data";
+    <!-- nav css/html nav !-->
+    <?php include ('template/nav.php') ?>
 
-        //check whether a form was submitted
+
+      <?php
+
+      error_reporting(E_ALL);
+      ini_set( 'display_errors', 'On');// Turn on debugging.
+
+      include ('template/aws.php');// Log in to AWS
+
+      $bucket = "com.cloud.php.data";
+
+
+
+
+      //check whether a form was submitted
+      if(isset($_POST['Submit'])){
+
+        $id = uniqid();
+
+        //retreive post variables
+        $fileName = $_FILES['theFile']['name'];
+        $fileTempName = $_FILES['theFile']['tmp_name'];
+        $awsFileName = time();
+
+
+        if($_FILES['theFile']['error'] > 0){
+          echo "return code: " . $_FILES['theFile']['error'];
+
+          if($_FILES['theFile']['error'] == 4){
+            echo ' No file was uploaded.  Is it a music file?';
+          }
+        }
+
+        $result = $s3Client->putObject(array(
+          'ACL' => 'public-read',
+          'SourceFile' => $fileTempName,
+          'Bucket' => "com.cloud.php.data",
+          'Key' => "Music/" . $awsFileName . ".mp3"
+        ));
+
+        // create the initial playlist finial
+        $playlistUrls = $result['ObjectURL'] . "\r\n";
+
+        $pls = fopen('liq/' . $id . "-playlist.pls", "w") or die("Unable to write!");
+        fwrite($pls, $playlistUrls);
+        fclose($pls);
+
+
+        //create the initial liquidsoap file
+        $liqText =
+        '
+        output.icecast(%mp3,
+        host = "54.152.139.27", port = 8000,
+        password = "cloudphp2015", mount = "' . $id . '",
+        mksafe(playlist(reload_mode="watch", "liq/' . $id . '-playlist.pls")))
+        ';
+
+        $liqFile = fopen('liq/' . $id . ".liq", "w");
+        fwrite($liqFile, $liqText);
+        fclose($liqFile);
+
+        //echo 'liquidsoap /var/www/html/liq/' . $id . '.liq';
+        shell_exec('nohup liquidsoap liq/' . $id . '.liq > /dev/null & echo $!');
+        //var_dump($output);
+
+
+
+      }
+      ?>
+
+
+
+      <div class="jumbotron">
+        <h1>Listen to music.  Together.</h1>
+
+
+        <?php
+
         if(isset($_POST['Submit'])){
 
-            //retreive post variables
-            $fileName = $_FILES['theFile']['name'];
-            $fileTempName = $_FILES['theFile']['tmp_name'];
-            $awsFileName = time();
+          echo '<p>Your room is ready:<br>
+          <a href="http://45.56.101.195/?id=' . $id . '">http://45.56.101.195/?id=' . $id . '</a></p>';
 
 
-            if($_FILES['theFile']['error'] > 0){
-                echo "return code: " . $_FILES['theFile']['error'];
-            }	
-            
-            $result = $s3Client->putObject(array(
-                'ACL' => 'public-read',
-                'SourceFile' => $fileTempName,
-                'Bucket' => "com.cloud.php.data",
-                'Key' => "Music/" . $awsFileName . ".mp3"      
-            ));
-            
-
-            
-            
+          //echo '<p><video controls="" autoplay="" name="media">
+            //    <source src="http://54.152.139.27:8000/' . $id . '" type="audio/mpeg"></video>';
+           //src="http://54.152.139.27:8000/' . $id . ';" type="audio/mpeg"></audio></p>';
+        //  echo '"http://54.152.139.27:8000/' . $id . ';"';
 
         }
-    ?>
+
+        if(isset($_GET["id"])){
+
+          $gotId = $_GET["id"];
+          echo '<p><video controls="" autoplay="" preload="auto" name="media">
+                <source src="http://54.152.139.27:8000/' . $gotId . '" type="audio/mpeg"></video>';
+
+          echo '<p>Room URL:<br>
+                <a href="http://45.56.101.195/?id=' . $gotId . '">http://45.56.101.195/?id=' . $gotId . '</a></p>';
+
+        }
+        ?>
 
 
+        <form action="index.php" method="post" enctype="multipart/form-data">
+          <input name="theFile" type="file" />
+          <input name="Submit" type="submit" value="Upload">
+        </form>
+      </div>
 
-<div class="jumbotron">
-  <h1>Upload an MP3</h1>
+  </body>
 
-    <?php         
-            if(isset($_POST['Submit'])){
-                echo '<p><audio id="audiobox" src="' . $result['ObjectURL'] . '" preload="auto"/></p>'; 
-            }
-    ?>
-
-
-<form action="" method="post" enctype="multipart/form-data">
-  <input name="theFile" type="file" />
-  <input name="Submit" type="submit" value="Upload">
-</form>
-</div>
-        
-        
-</div>
-
-
-</body>
-
-</html>
+  </html>
