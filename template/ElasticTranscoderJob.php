@@ -22,8 +22,8 @@ class ElasticTranscoderJob
 		$this->folder = $folder.'/';
 		
 		$client = ElasticTranscoderClient::factory(array(
-			'key' => 'AKIAJRQGIO3GWPVBL4CQ',
-			'secret' => 'p8yIlzEOsY7R+/+nVRbdPVzgkFld7oruWMgOvCXk',
+			'key' => 'YOUR_KEY',
+			'secret' => 'YOUR_SECRET_KEY',
 			'region'  => 'us-west-2'
 		));
 		
