@@ -9,7 +9,6 @@ class AWS {
     private $key = "ACCESS_KEY";
     private $secret = "SECRET_ACCESS_KEY";
 
-
     public function __construct(){
 
     }
@@ -30,9 +29,9 @@ class AWS {
     public function authElasticTranscoder(){
 
         $ETClient = ElasticTranscoderClient::factory(array(
-            'key' => $key,
-			'secret' => $secret,
-			'region'  => 'us-west-2'
+        	'key' => $key,
+		'secret' => $secret,
+		'region'  => 'us-west-2'
         ));
 
         return $ETClient;
