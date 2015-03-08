@@ -7,7 +7,6 @@
 	
 include 'vendor/autoload.php';
 include 'aws.php';
-use Aws\ElasticTranscoder\ElasticTranscoderClient;	
 	
 class ElasticTranscoderJob
 {
