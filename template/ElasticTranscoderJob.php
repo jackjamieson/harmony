@@ -6,6 +6,7 @@
 //     3. Corresponding PipelineID set up and provided
 	
 include 'vendor/autoload.php';
+include 'aws.php';
 use Aws\ElasticTranscoder\ElasticTranscoderClient;	
 	
 class ElasticTranscoderJob
@@ -21,11 +22,8 @@ class ElasticTranscoderJob
 		$this->output = $output;
 		$this->folder = $folder.'/';
 		
-		$client = ElasticTranscoderClient::factory(array(
-			'key' => 'YOUR_KEY',
-			'secret' => 'YOUR_SECRET_KEY',
-			'region'  => 'us-west-2'
-		));
+		$aws = new aws();
+		$client = $aws.authElasticTranscoder();
 		
 		$result = $client->createJob(array(
 			// PipelineId is required
