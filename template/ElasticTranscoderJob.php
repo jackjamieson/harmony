@@ -19,11 +19,11 @@ class ElasticTranscoderJob
 	{
 		$this->input = $input;
 		$this->output = $output;
-		$this->folder = $folder;
+		$this->folder = $folder.'/';
 		
 		$client = ElasticTranscoderClient::factory(array(
-			'key' => 'AKIAI35YL7GQGKUUAWYA',
-			'secret' => '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',
+			'key' => 'AKIAJRQGIO3GWPVBL4CQ',
+			'secret' => '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',
 			'region'  => 'us-west-2'
 		));
 		
@@ -31,7 +31,7 @@ class ElasticTranscoderJob
 			// PipelineId is required
 			'PipelineId' => '1425787425117-1042wm',
 			'Input' => array(
-				'Key' => $input,
+				'Key' => $this->folder.$input,
 				'FrameRate' => 'auto',
 				'Resolution' => 'auto',
 				'AspectRatio' => 'auto',
@@ -39,12 +39,11 @@ class ElasticTranscoderJob
 				'Container' => 'auto',
 			),
 			'Output' => array(
-				'Key' => $output,
+				'Key' => $this->folder.$output,
 				'ThumbnailPattern' => '',
 				'Rotate' => 'auto',
 				'PresetId' => '1351620000001-300010' //320kb-s MP3 - CHANGE THIS
-			),
-			'OutputKeyPrefix' => $folder.'/'
+			)
 		));
 		
 		echo "<br>";
