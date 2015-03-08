@@ -42,7 +42,7 @@ class ElasticTranscoderJob
 				'Key' => $this->folder.$output,
 				'ThumbnailPattern' => '',
 				'Rotate' => 'auto',
-				'PresetId' => '1351620000001-300010' //320kb-s MP3 - CHANGE THIS
+				'PresetId' => '1351620000001-300040' //128kb-s MP3 - CHANGE THIS
 			)
 		));
 		
