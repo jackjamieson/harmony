@@ -31,7 +31,7 @@ class AWS {
         $ETClient = ElasticTranscoderClient::factory(array(
         	'key' => $key,
 		'secret' => $secret,
-		'region'  => 'us-west-2'
+		'region' => 'us-west-2'
         ));
 
         return $ETClient;
