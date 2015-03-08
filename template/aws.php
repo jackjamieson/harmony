@@ -18,8 +18,8 @@ class AWS {
 
         $s3Client = S3Client::factory(array(
             'credentials' => array(
-                'key'    => $key,
-                'secret' => $secret,
+                'key'    => $this->key,
+                'secret' => $this->secret,
             )
         ));
 
@@ -30,8 +30,8 @@ class AWS {
     public function authElasticTranscoder(){
 
         $ETClient = ElasticTranscoderClient::factory(array(
-        	'key' => $key,
-		'secret' => $secret,
+        	'key' => $this->key,
+		'secret' => $this->secret,
 		'region' => 'us-west-2'
         ));
 
