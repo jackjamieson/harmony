@@ -6,6 +6,9 @@ use Aws\S3\S3Client;
 class AWS {
 
     private $bucketName = "user-music-folder";
+    private $key = "ACCESS_KEY";
+    private $secret = "SECRET_ACCESS_KEY";
+
 
     public function __construct(){
 
@@ -15,12 +18,24 @@ class AWS {
 
         $s3Client = S3Client::factory(array(
             'credentials' => array(
-                'key'    => 'AKIAIO7OMT7GA7D4I7AQ',
-                'secret' => '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',
+                'key'    => $key,
+                'secret' => $secret,
             )
         ));
 
         return $s3Client;
+
+    }
+    
+    public function authElasticTranscoder(){
+
+        $ETClient = ElasticTranscoderClient::factory(array(
+            'key' => $key,
+			'secret' => $secret,
+			'region'  => 'us-west-2'
+        ));
+
+        return $ETClient;
 
     }
 
