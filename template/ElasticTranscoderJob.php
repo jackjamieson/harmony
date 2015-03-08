@@ -22,8 +22,8 @@ class ElasticTranscoderJob
 		$this->output = $output;
 		$this->folder = $folder.'/';
 		
-		$aws = new aws();
-		$client = $aws.authElasticTranscoder();
+		$aws = new AWS();
+		$client = $aws->authElasticTranscoder();
 		
 		$result = $client->createJob(array(
 			// PipelineId is required
