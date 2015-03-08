@@ -2,6 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';// Load the dependencies from Composer
 use Aws\S3\S3Client;
+use Aws\ElasticTranscoder\ElasticTranscoderClient;
 
 class AWS {
 
