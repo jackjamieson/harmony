@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';// Load the dependencies from Composer
 use Aws\S3\S3Client;
-use Aws\ElasticTranscoder\ElasticTranscoderClient;
+//use Aws\ElasticTranscoder\ElasticTranscoderClient;
 
 class AWS {
 
@@ -27,7 +27,7 @@ class AWS {
 
     }
     
-    public function authElasticTranscoder(){
+    /*public function authElasticTranscoder(){
 
         $ETClient = ElasticTranscoderClient::factory(array(
         	'key' => $this->key,
@@ -37,7 +37,7 @@ class AWS {
 
         return $ETClient;
 
-    }
+    }*/
 
     public function uploadSong($s3Client, $fileTempName, $awsFileName){
 
