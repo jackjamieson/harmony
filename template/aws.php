@@ -11,6 +11,11 @@ class AWS {
     private $secret = "SECRET_ACCESS_KEY";
 
     public function __construct(){
+        
+        $creds = parse_ini_file('creds.ini', false);// Read the aws creds from a file on the server
+        
+        $this->key = $creds["s3key"];
+        $this->secret = $creds["s3secret"];
 
     }
 
