@@ -6,3 +6,23 @@ body {
 .navbar {
   margin-bottom: 20px;
 }
+
+.modal-dialog {
+    width: 500px;
+}
+.modal-footer {
+    height: 70px;
+    margin: 0;
+}
+.modal-footer .btn {
+    font-weight: bold;
+}
+.modal-footer .progress {
+    display: none;
+    height: 32px;
+    margin: 0;
+}
+.input-group-addon {
+    color: #fff;
+    background: #3276B1;
+}
