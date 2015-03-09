@@ -15,7 +15,7 @@ echo '
          <span class="icon-bar"></span>
          <span class="icon-bar"></span>
        </button>
-       <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-music" aria-hidden="true"></span> Harmony</a>
+       <a class="navbar-brand" href="http://45.56.101.195"><span class="glyphicon glyphicon-music" aria-hidden="true"></span> Harmony</a>
      </div>
      <div id="navbar" class="navbar-collapse collapse">
        <ul class="nav navbar-nav">
