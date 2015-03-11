@@ -24,18 +24,18 @@
 
             <?php
 
-            error_reporting(E_ALL);
+    error_reporting(E_ALL);
 
 
-            ini_set( 'display_errors', 'On');// Turn on debugging.
+ini_set( 'display_errors', 'On');// Turn on debugging.
 
-            include ('template/aws.php');// Include our aws services
-            include ('template/util.php');// Utility class for generating liquidsoap files
+include ('template/aws.php');// Include our aws services
+include ('template/util.php');// Utility class for generating liquidsoap files
 
-            $aws = new AWS();
-            $s3Client = $aws->authS3();// Authorize the S3 object.
+$aws = new AWS();
+$s3Client = $aws->authS3();// Authorize the S3 object.
 
-            $bucket = $aws->getBucket();// Get the bucket name for our music uploads
+$bucket = $aws->getBucket();// Get the bucket name for our music uploads
 
 
 
@@ -66,7 +66,7 @@ if(isset($_POST['Submit'])){
     $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
 
     $util = new Util();
-    
+
     // Generate a new .pls on the Linode server
     // This contains the mp3 urls on S3.
     $util->makePlaylistFile($result, $id);
