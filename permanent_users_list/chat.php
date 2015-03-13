@@ -128,6 +128,5 @@ function getQueryVariable(variable)
 </div>
 </div>
 <div id="users"></div>
-
 </body>
 </html>
