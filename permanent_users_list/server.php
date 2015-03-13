@@ -186,5 +186,6 @@ function room_users($roomid)
 		}
 
 	}	
+	
 	return $list;
 }
