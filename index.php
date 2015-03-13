@@ -20,6 +20,12 @@
 
             <!-- css/html nav !-->
             <?php include ('template/nav.php') ?>
+            
+            <?php 
+                // Find out whether or not the user is logged in and pass it into Nav
+                $nav = new Nav(false); 
+                $nav->render();
+            ?>
 
 
             <?php

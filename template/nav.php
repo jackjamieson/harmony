@@ -1,84 +1,188 @@
 <?php
 
-$page = $_SERVER['PHP_SELF'];
+class Nav {
+        
+    private $page;
+    private $isLoggedIn = false;
 
-//nav header
-echo '
-<div class="container">
- <!-- Static navbar -->
- <nav class="navbar navbar-default">
-   <div class="container-fluid">
-     <div class="navbar-header">
-       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-         <span class="sr-only">Toggle navigation</span>
-         <span class="icon-bar"></span>
-         <span class="icon-bar"></span>
-         <span class="icon-bar"></span>
-       </button>
-       <a class="navbar-brand" href="http://45.56.101.195"><span class="glyphicon glyphicon-music" aria-hidden="true"></span> Harmony</a>
-     </div>
-     <div id="navbar" class="navbar-collapse collapse">
-       <ul class="nav navbar-nav">
 
-         <li class="active"><a href="#">Home</a></li>
+    public function __construct($isLoggedIn){
+        
+        $this->page = $_SERVER['PHP_SELF'];
+        $this->isLoggedIn = $isLoggedIn;
+        
+    }
 
-       </ul>
-       <ul class="nav navbar-nav navbar-right">
+    public function render(){
+        
+        if($this->isLoggedIn == true)
+        {
+            //';if($page == '/manage.php'){ echo "Manage Music"; } else { echo 
+            //nav header
+        echo '
+        <div class="container">
+         <!-- Static navbar -->
+         <nav class="navbar navbar-default">
+           <div class="container-fluid">
+             <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                 <span class="sr-only">Toggle navigation</span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="http://45.56.101.195"><span class="glyphicon glyphicon-music" aria-hidden="true"></span> Harmony</a>
+             </div>
+             <div id="navbar" class="navbar-collapse collapse">
+               <ul class="nav navbar-nav">
 
-         <li><a href="#" data-toggle="modal" data-target="#myModal">Sign In</a></li>
-         <li><a href="#">Register</a></li>
-         
-       </ul>
-     </div><!--/.nav-collapse -->
-   </div><!--/.container-fluid -->
- </nav>
- ';
+                 <li '; if($this->page == "/manage.php"){echo 'class="active"';} echo '><a href="manage.php">Manage Music</a></li>
+                <li '; if($this->page == "/room.php"){echo 'class="active"';} echo '><a href="room.php">Create Room</a></li>
 
-//login 
-echo
-    '
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
 
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title" id="myModalLabel">Sign in</h4>
-			</div> <!-- /.modal-header -->
+               </ul>
+               <ul class="nav navbar-nav navbar-right">
 
-			<div class="modal-body">
-				<form role="form">
-					<div class="form-group">
-						<div class="input-group">
-							<input type="text" class="form-control" id="uLogin" placeholder="Login">
-							<label for="uLogin" class="input-group-addon glyphicon glyphicon-user"></label>
-						</div>
-					</div> <!-- /.form-group -->
+                 <li><a href="#" data-toggle="modal" data-target="#myModal">Account Settings</a></li>
+                 <li><a href="#">Log Out</a></li>
 
-					<div class="form-group">
-						<div class="input-group">
-							<input type="password" class="form-control" id="uPassword" placeholder="Password">
-							<label for="uPassword" class="input-group-addon glyphicon glyphicon-lock"></label>
-						</div> <!-- /.input-group -->
-					</div> <!-- /.form-group -->
-				</form>
+               </ul>
+             </div><!--/.nav-collapse -->
+           </div><!--/.container-fluid -->
+         </nav>
+         ';
 
-			</div> <!-- /.modal-body -->
+        //login 
+        echo
+            '
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
 
-			<div class="modal-footer">
-				<button class="form-control btn btn-primary">Ok</button>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Sign in</h4>
+                    </div> <!-- /.modal-header -->
 
-				<div class="progress">
-					<div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="100" style="width: 0%;">
-						<span class="sr-only">progress</span>
-					</div>
-				</div>
-			</div> <!-- /.modal-footer -->
+                    <div class="modal-body">
+                        <form role="form">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="uLogin" placeholder="Login">
+                                    <label for="uLogin" class="input-group-addon glyphicon glyphicon-user"></label>
+                                </div>
+                            </div> <!-- /.form-group -->
 
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-';
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="uPassword" placeholder="Password">
+                                    <label for="uPassword" class="input-group-addon glyphicon glyphicon-lock"></label>
+                                </div> <!-- /.input-group -->
+                            </div> <!-- /.form-group -->
+                        </form>
+
+                    </div> <!-- /.modal-body -->
+
+                    <div class="modal-footer">
+                        <button class="form-control btn btn-primary">Ok</button>
+
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="100" style="width: 0%;">
+                                <span class="sr-only">progress</span>
+                            </div>
+                        </div>
+                    </div> <!-- /.modal-footer -->
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        ';
+        }
+        else{
+           
+        //nav header
+        echo '
+        <div class="container">
+         <!-- Static navbar -->
+         <nav class="navbar navbar-default">
+           <div class="container-fluid">
+             <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                 <span class="sr-only">Toggle navigation</span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="http://45.56.101.195"><span class="glyphicon glyphicon-music" aria-hidden="true"></span> Harmony</a>
+             </div>
+             <div id="navbar" class="navbar-collapse collapse">
+               <ul class="nav navbar-nav">
+
+                 <li class="active"><a href="#">Home</a></li>
+
+               </ul>
+               <ul class="nav navbar-nav navbar-right">
+
+                 <li><a href="#" data-toggle="modal" data-target="#myModal">Sign In</a></li>
+                 <li><a href="#">Register</a></li>
+
+               </ul>
+             </div><!--/.nav-collapse -->
+           </div><!--/.container-fluid -->
+         </nav>
+         ';
+
+        //login 
+        echo
+            '
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Sign in</h4>
+                    </div> <!-- /.modal-header -->
+
+                    <div class="modal-body">
+                        <form role="form">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="uLogin" placeholder="Login">
+                                    <label for="uLogin" class="input-group-addon glyphicon glyphicon-user"></label>
+                                </div>
+                            </div> <!-- /.form-group -->
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="uPassword" placeholder="Password">
+                                    <label for="uPassword" class="input-group-addon glyphicon glyphicon-lock"></label>
+                                </div> <!-- /.input-group -->
+                            </div> <!-- /.form-group -->
+                        </form>
+
+                    </div> <!-- /.modal-body -->
+
+                    <div class="modal-footer">
+                        <button class="form-control btn btn-primary">Ok</button>
+
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="100" style="width: 0%;">
+                                <span class="sr-only">progress</span>
+                            </div>
+                        </div>
+                    </div> <!-- /.modal-footer -->
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        ';
+            
+        }
+        
+    }
+    }
+
 
 
 ?>
