@@ -10,4 +10,5 @@
 			$this->roomid = $roomid;
 		}
 	}
+	
 ?>
