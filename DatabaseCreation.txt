@@ -1,0 +1,27 @@
+CREATE DATABASE testdb;
+
+CREATE TABLE user
+(
+	user_id int PRIMARY KEY,
+	username varchar(20) NOT NULL UNIQUE,
+	password varchar(20) NOT NULL,
+	email varchar(254) NOT NULL UNIQUE,
+	karma int NOT NULL
+);
+
+CREATE TABLE song
+(
+	song_id int PRIMARY KEY,
+	title varchar(255) NOT NULL,
+	artist varchar(255),
+	album varchar(255),
+	genre varchar(255),
+	location varchar(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE owns
+(
+	user_id int NOT NULL,
+	song_id int NOT NULL,
+	PRIMARY KEY (user_id, song_id)
+);
