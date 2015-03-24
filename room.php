@@ -28,17 +28,6 @@
                 $nav->render();
             ?>
 
-
-            <?php
-
-            error_reporting(E_ALL);
-
-
-            ini_set( 'display_errors', 'On');// Turn on debugging.
-
-            //include ('template/aws.php');// Include our aws services
-            //include ('template/util.php');// Utility class for generating liquidsoap files
-            ?>
             
          <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-8">
@@ -47,7 +36,21 @@
                 <h3 class="panel-title">Music</h3>
               </div>
               <div class="panel-body">
-                Put the playlist and music related stuff here.
+                  <?php
+
+                  if(isset($_GET["id"])){
+                      
+
+                    $gotId = $_GET["id"];
+                      echo '<h3>Room ' . $gotId . '</h3>';
+                    echo '<p><audio controls="" autoplay="" preload="auto" name="media">
+                                <source src="http://54.152.139.27:8000/' . $gotId . '" type="audio/mp3"></audio>';
+
+                    echo '<p>Share Room URL:<br>
+                                <a href="http://45.56.101.195/room.php?id=' . $gotId . '">http://45.56.101.195/room.php?id=' . $gotId . '</a></p>';
+
+                }
+                ?>
               </div>
             </div> 
             </div>

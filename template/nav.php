@@ -37,13 +37,13 @@ class Nav {
                <ul class="nav navbar-nav">
 
                  <li '; if($this->page == "/manage.php"){echo 'class="active"';} echo '><a href="manage.php">Manage Music</a></li>
-                <li '; if($this->page == "/room.php"){echo 'class="active"';} echo '><a href="room.php">Create Room</a></li>
+                <li '; if($this->page == "/create.php"){echo 'class="active"';} echo '><a href="create.php">Create Room</a></li>
 
 
                </ul>
                <ul class="nav navbar-nav navbar-right">
 
-                 <li><a href="#" data-toggle="modal" data-target="#myModal">Account Settings</a></li>
+                 <li><a href="#">Account Settings</a></li>
                  <li><a href="#">Log Out</a></li>
 
                </ul>
