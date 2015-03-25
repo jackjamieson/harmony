@@ -21,7 +21,7 @@ class Util {
         '
         output.icecast(%mp3,
         host = "54.152.139.27", port = 8000,
-        password = "cloudphp2015", mount = "' . $id . '",
+        password = "", mount = "' . $id . '",
         mksafe(playlist(reload_mode="watch", "liq/' . $id . '-playlist.pls")))
         ';
 
