@@ -57,10 +57,17 @@
                                 Add Song <span class="caret"></span>
                               </button>
                               <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Upload New</a></li>
+                                <li><a href="#" class="upload-new">Upload New</a></li>
                                 <li><a href="#">From Library</a></li>
                               </ul>
-                            </div>';
+                            </div>
+                            
+                            <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Upvote</button>
+                            <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> Downvote</button>
+                            <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Leave Room</button>
+
+
+                            ';
 
                 }
                 ?>
@@ -82,8 +89,13 @@
              
              </div>
         </div>
-                
-
+               
+        <!-- modal boxes for adding to the playlist !-->
+        <script>
+        $(document).ready(function(){
+            $('.upload-new').paulund_modal_box();
+        });
+        </script>
         </body>
 
 </html>
