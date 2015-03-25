@@ -36,21 +36,35 @@
                 <h3 class="panel-title">Music</h3>
               </div>
               <div class="panel-body">
-                  <?php
-
-                  if(isset($_GET["id"])){
+                <?php
+                // if the url has an id query then use that to find the appropriate stream
+                if(isset($_GET["id"])){
                       
 
                     $gotId = $_GET["id"];
-                      echo '<h3>Room ' . $gotId . '</h3>';
+                    echo '<h3>Room ' . $gotId . '</h3>';// write out the room's name
+                    
+                    // draw the audio player and populate it with the appropriate stream
                     echo '<p><audio controls="" autoplay="" preload="auto" name="media">
                                 <source src="http://54.152.139.27:8000/' . $gotId . '" type="audio/mp3"></audio>';
 
-                    echo '<p>Share Room URL:<br>
-                                <a href="http://45.56.101.195/room.php?id=' . $gotId . '">http://45.56.101.195/room.php?id=' . $gotId . '</a></p>';
+                    echo '<div class="well"><b>Share Room URL:</b><br>
+                                <a href="http://45.56.101.195/room.php?id=' . $gotId . '">http://45.56.101.195/room.php?id=' . $gotId . '</a></div>';
+                    
+                    echo '<!-- Single button -->
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                Add Song <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Upload New</a></li>
+                                <li><a href="#">From Library</a></li>
+                              </ul>
+                            </div>';
 
                 }
                 ?>
+                  
               </div>
             </div> 
             </div>
