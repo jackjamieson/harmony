@@ -85,16 +85,37 @@
                     <h4 class="modal-title" id="myModalLabel">Upload New Song</h4>
                   </div>
                   <div class="modal-body">
+                    <div class="alert alert-success" role="alert" id="upload_status" style="display:none;">Song successfully added!</div>
                     Add to the playlist:<p>
+                    <script type="text/javascript">
+                    function upload_started(){
+                     document.getElementById("upload_status").style.display="none";
+                    }
+                    function upload_completed(){
+                     document.getElementById("upload_status").style.display="block";
+                    }
 
+                    var close = document.getElementById("closed");
+
+                    function reset() {
+                      document.getElementById("upload_status").style.display="none";
+
+
+                    }
+
+                    close.onclick = reset;
+                    </script>
                     </p>
-                    <form action="create.php" method="post" enctype="multipart/form-data">
+                    <form action="upload_in_room.php?id=<?php echo $gotId ?>" method="post" enctype="multipart/form-data" target="hidden_upload" onsubmit="upload_started()">
                         <input name="theFile" type="file" />
                         <input name="Submit" type="submit" value="Upload">
                     </form>
+                    <!-- upload the file to a hidden iframe so we don't have to reload the page !-->
+                    <iframe id="hidden_upload" name="hidden_upload" style="display:block" ></iframe>
+
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closed">Close</button>
                   </div>
                 </div>
               </div>
