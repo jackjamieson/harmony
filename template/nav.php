@@ -42,8 +42,8 @@ class Nav {
 
                </ul>
                <ul class="nav navbar-nav navbar-right">
-
-                 <li><a href="#">Account Settings</a></li>
+                <li><span class="navbar-text" style="color:grey;">Hey, User123!</span></li>
+                 <li '; if($this->page == "/account.php"){echo 'class="active"';} echo '><a href="account.php">Account Settings</a></li>
                  <li><a href="#">Log Out</a></li>
 
                </ul>
