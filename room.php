@@ -148,7 +148,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title">Chat</h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" style="overflow-y:auto;">
                   <?php
                   $colours = array('007AFF','FF7000','FF7000','15E25F','CFC700','CFC700','CF1100','CF00BE','F00');
                   $user_colour = array_rand($colours);
