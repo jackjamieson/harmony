@@ -163,7 +163,7 @@
                   $(document).ready(function(){
 
                     var divRID = getQueryVariable("id");
-                    document.getElementById("rid").innerHTML = "<center>Room ID: " + divRID + "</center>";
+                    document.getElementById("rid").innerHTML = "";
 
                     //create a new WebSocket object.
                     var wsUri = "ws://45.56.97.42:9000/server.php";
@@ -214,7 +214,7 @@
                       {
                         if(type == 'usermsg')
                         {
-                          $('#message_box').append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"(" + uroomid +")"+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
+                          $('#message_box').append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
 
                           //This loops will find a username match within the user array
                           for(i = 0; i < users.length + 1; i++)
