@@ -115,7 +115,7 @@
 
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closed">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closed" onclick="reset()">Close</button>
                   </div>
                 </div>
               </div>

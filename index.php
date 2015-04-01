@@ -20,10 +20,10 @@
 
             <!-- css/html nav !-->
             <?php include ('template/nav.php') ?>
-            
-            <?php 
+
+            <?php
                 // Find out whether or not the user is logged in and pass it into Nav
-                $nav = new Nav(false); 
+                $nav = new Nav(false);
                 $nav->render();
             ?>
 
@@ -31,6 +31,13 @@
 
             <div class="jumbotron">
                 <h1>Listen to music.  Together.</h1>
+
+                <p>Harmony is a real-time collaborative playlist creation tool.  Share and listen to music with your friends as if
+                you were all in the same room.</p>
+
+                <p><a href="create.php" class="btn btn-primary btn-lg" role="button">
+                   Get Started</a>
+                </p>
             </div>
 
         </body>
