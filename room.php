@@ -106,12 +106,12 @@
                     close.onclick = reset;
                     </script>
                     </p>
-                    <form action="upload_in_room.php?id=<?php echo $gotId ?>" method="post" enctype="multipart/form-data" target="hidden_upload" onsubmit="upload_started()">
+                    <form action="upload_in_room.php?id=<?php echo $gotId; ?>" method="post" enctype="multipart/form-data" target="hidden_upload" onsubmit="upload_started()">
                         <input name="theFile" type="file" />
                         <input name="Submit" type="submit" value="Upload">
                     </form>
                     <!-- upload the file to a hidden iframe so we don't have to reload the page !-->
-                    <iframe id="hidden_upload" name="hidden_upload" style="display:block" ></iframe>
+                    <iframe id="hidden_upload" name="hidden_upload" style="display:none" ></iframe>
 
                   </div>
                   <div class="modal-footer">

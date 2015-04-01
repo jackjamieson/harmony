@@ -39,8 +39,6 @@ if(isset($_POST['Submit'])){
   // This contains the mp3 urls on S3.
   $util->updatePlaylistFile($result, $roomId);
 
-  // Connect to the server and queue up the song we just uploaded
-  $util->queueSong($result, $roomId);
 
 
 
