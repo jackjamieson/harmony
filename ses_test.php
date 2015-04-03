@@ -52,5 +52,6 @@
     'ReplyToAddresses' => array('string', ... ),
     'ReturnPath' => 'string',*/
 	));
+	
 	echo "Email sent\n";
 ?>
