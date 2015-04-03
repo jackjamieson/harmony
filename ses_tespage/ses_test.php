@@ -19,14 +19,14 @@
 
 	echo "Ses Client created.\n";
 
-	//$address = $_GET["address"];
+	$address = $_GET["address"];
 
 	$result = $client->sendEmail(array(
     // Source is required
     'Source' => 'harmony.mailservice@gmail.com',
     // Destination is required
     'Destination' => array(
-        'ToAddresses' => array("jkidd47@gmail.com"),
+        'ToAddresses' => array($address),
         //'CcAddresses' => array('string', ... ),
         //'BccAddresses' => array('string', ... ),
     ),
