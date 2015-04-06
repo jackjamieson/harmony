@@ -1,19 +1,34 @@
 <html>
+<head>
+<title>Harmony SES Test Page</title> 
+<script language="javascript">
+	function fncCreateElement()
+	{
+		var mySpan = document.getElementById('mySpan');
+
+	   var myElement1 = document.createElement('input');
+	   myElement1.setAttribute('type',"text");
+	   myElement1.setAttribute('name',"emailAddress[]");
+	   mySpan.appendChild(myElement1);	
+
+	   var myElement2 = document.createElement('<br>');
+	   mySpan.appendChild(myElement2);
+	}
+</script>
+</head>
 <body>
 <br>
-<h1> Harmony SES Test Page </h1>
-<br>
-<br>
-
+<h1>Harmony SES Test Page</h1>
+<br> 
 <?php include 'vendor/autoload.php'; 
 	include 'ses_test.php';
 ?>
-
-<form action="ses_test.php" method="get">
-Field 1: <input type="text" name="address">
-<input type="submit" value="Send Email">
-</form>
+	<form action="ses_test.php" method="post">
+		<input type="text" name="emailAddress[]">
+		<input name="btnButton" type="button" value="+" onClick="JavaScript:fncCreateElement();"><br>
+		<span id="mySpan"></span>
+		<input name="btnSubmit" type="submit" value="Submit">
+	</form>
 <br>
 </body>
-
 </html> 
