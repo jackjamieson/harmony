@@ -12,8 +12,8 @@
 	use Aws\Ses\SesClient;
 
 	$client = SesClient::factory(array(
-		'key' => 'AKIAIN3WOX62STU6HCBQ',
-		'secret' => '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',
+		'key' => '', //will put the credentials on the server
+		'secret' => '',
 		'region' => 'us-west-2'
 	));
 
