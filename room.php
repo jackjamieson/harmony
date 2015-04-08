@@ -36,16 +36,34 @@
             <h3 class="panel-title">Music</h3>
           </div>
           <div class="panel-body">
+              <!-- script to run to php the read the playlist !-->
+
             <?php
             // if the url has an id query then use that to find the appropriate stream
             if(isset($_GET["id"])){
+                
+                $gotId = $_GET["id"];
+
+                echo 
+                '
+                <script type="text/javascript">
+                function recp() {
+                  $("#playlist").load("template/readPlaylist.php?id=' . $gotId . '");
+                }
+                setInterval(recp,5000);
 
 
-              $gotId = $_GET["id"];
-              echo '<h3>Room ' . $gotId . '</h3>';// write out the room's name
+                </script>
+                ';
 
+
+            echo '<h3>Room ' . $gotId . '</h3>';// write out the room's name
+
+                // display the playlist
+                echo '<div class="well"><h4><b>Now Playing:</b> song name</h4><p><b>Playlist:</b><br><div id="playlist"></div></div>';
+                
               // draw the audio player and populate it with the appropriate stream
-              echo '<p><audio controls="" autoplay="" preload="auto" name="media">
+              echo '<p><audio autoplay="" preload="auto" name="media">
                 <source src="http://54.152.139.27:8000/' . $gotId . '" type="audio/mp3"></audio>';
 
                   echo '<div class="well"><b>Share Room URL:</b><br>
@@ -148,7 +166,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title">Chat</h3>
                 </div>
-                <div class="panel-body" style="overflow-y:auto;">
+                <div class="panel-body">
                   <?php
                   $colours = array('007AFF','FF7000','FF7000','15E25F','CFC700','CFC700','CF1100','CF00BE','F00');
                   $user_colour = array_rand($colours);
@@ -162,6 +180,7 @@
                   <script language="javascript" type="text/javascript">
                   $(document).ready(function(){
 
+                    var scrolled = 0;
                     var divRID = getQueryVariable("id");
                     document.getElementById("rid").innerHTML = "";
 
@@ -175,6 +194,8 @@
                     }
 
                     $('#send-btn').click(function(){ //use clicks message send button
+                        $('#message_box').scrollTop($('#message_box').scrollTop()+40);
+
                       var mymessage = $('#message').val(); //get message text
                       var myname = $('#name').val(); //get user name
                       var roomID = getQueryVariable("id");
@@ -198,6 +219,40 @@
                       //convert and send data to server
                       websocket.send(JSON.stringify(msg));
                     });
+                      
+                      $('#message').on("keypress", function(e) {
+                                if (e.keyCode == 13) {
+                                    scrolled=scrolled+300;
+
+                                    $("#message_box").animate({
+                                            scrollTop:  scrolled
+                                       });
+
+                                
+                      var mymessage = $('#message').val(); //get message text
+                      var myname = $('#name').val(); //get user name
+                      var roomID = getQueryVariable("id");
+
+                      if(myname == ""){ //empty name?
+                        alert("Enter your name please!");
+                        return;
+                      }
+                      if(mymessage == ""){ //emtpy message?
+                        //alert("Enter Some message Please!");
+                        return;
+                      }
+
+                      //prepare json data
+                      var msg = {
+                        message: mymessage,
+                        name: myname,
+                        color : '<?php echo $colours[$user_colour]; ?>',
+                        room : roomID
+                      };
+                      //convert and send data to server
+                      websocket.send(JSON.stringify(msg));
+                                }
+                        });
 
                     //#### Message received from server?
                     websocket.onmessage = function(ev) {
@@ -236,7 +291,7 @@
                       }
                       if(type == 'system')
                       {
-                        $('#message_box').append("<div class=\"system_msg\">"+umsg+"</div>");
+                        //$('#message_box').append("<div class=\"system_msg\">"+umsg+"</div>");
                       }
 
                       $('#message').val(''); //reset text
@@ -259,18 +314,21 @@
                   </script>
                   <div id="rid"></div>
                   <div class="chat_wrapper">
-                    <div class="message_box" id="message_box"></div>
+                    <div class="message_box" id="message_box" style="height:200px; overflow:auto;"></div>
+                    
+                  </div>
                     <div class="panel">
                       <input type="text" name="name" id="name" placeholder="Name" maxlength="10" style="width:20%"  />
                       <input type="text" name="message" id="message" placeholder="Message" maxlength="80" style="width:60%" />
                       <button id="send-btn">Send</button>
                     </div>
-                  </div>
                   <div id="users"></div>
 
+<!--
                   <div class = "chat_wrapper2">
                     <div class = "user_list" id = "user_list"></div>
                   </div>
+-->
                 </div>
 
               </div>
