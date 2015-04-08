@@ -13,7 +13,21 @@ class Util {
         fwrite($pls, $playlistUrls);
         fclose($pls);
     }
+    
+    // keep the full listing of songs so we can show the playlist
+    public function makePlaylistFileFull($awsS3UploadResult, $id){
 
+        $result = $awsS3UploadResult;
+
+        // create the initial playlist finial
+        $playlistUrls = $result['ObjectURL'];
+
+        $pls = fopen('liq/' . $id . "-playlist-full.pls", "w") or die("Unable to write!");
+        fwrite($pls, $playlistUrls);
+        fclose($pls);
+    }
+    
+    
     public function makeLiqFile($id){
 
         //create the initial liquidsoap file
@@ -61,42 +75,19 @@ class Util {
       fclose($pls);
 
     }
-
-    public function queueSong($awsS3UploadResult, $id) {
+    
+    public function updatePlaylistFileFull($awsS3UploadResult, $id){
 
       $result = $awsS3UploadResult;
 
-      $socket = fsockopen("localhost", "1234", $errno, $errstr);
+      // update the initial playlist
+      $playlistUrls = "\n" . $result['ObjectURL'];
 
-      if($socket)
-      {
-        echo "Connected";
-      }
-      else {
-        echo "Connection failed";
-      }
-
-      fputs($socket, "help");
-
-      $buffer = "";
-
-      while(!feof($socket))
-      {
-          $buffer .=fgets($socket, 4096);
-      }
-
-      print_r($buffer);
-      echo "<br /><br /><br />";
-      var_dump($buffer);
-
-
-      fclose($socket);
-
+      $pls = fopen('liq/' . $id . "-playlist-full.pls", "a") or die("Unable to write!");
+      fwrite($pls, $playlistUrls);
+      fclose($pls);
 
     }
-
-
-
 }
 
 

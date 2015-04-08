@@ -38,6 +38,10 @@ if(isset($_POST['Submit'])){
   // Update the pls file on the web server
   // This contains the mp3 urls on S3.
   $util->updatePlaylistFile($result, $roomId);
+    
+  // update the full file to read the playlist
+  $util->updatePlaylistFileFull($result, $roomId);
+
 
 
 

@@ -87,6 +87,9 @@
                     // Generate a new .pls on the Linode server
                     // This contains the mp3 urls on S3.
                     $util->makePlaylistFile($result, $id);
+                    
+                    // make the pls file that we won't be using to make the playlist
+                    $util->makePlaylistFileFull($result, $id);
 
                     // Generate a new .liq files on the Linode Server
                     // This sends data to the Icecast server to be streamed.
