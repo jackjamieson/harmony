@@ -42,9 +42,9 @@ class Nav {
 
                </ul>
                <ul class="nav navbar-nav navbar-right">
-                <li><span class="navbar-text" style="color:grey;">Hey, User123!</span></li>
+                <li><span class="navbar-text" style="color:grey;">Hey, ' . $_SESSION['Username']  . '!</span></li>
                  <li '; if($this->page == "/account.php"){echo 'class="active"';} echo '><a href="account.php">Account Settings</a></li>
-                 <li><a href="#">Log Out</a></li>
+                 <li><a href="logout.php">Log Out</a></li>
 
                </ul>
              </div><!--/.nav-collapse -->
@@ -147,7 +147,8 @@ class Nav {
                     </div> <!-- /.modal-header -->
 
                     <div class="modal-body">
-                        <form role="form" method="post" action="/template/login.php">
+                        <form role="form" method="post" action="login.php">
+
                             <div class="form-group">
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="uLogin" name="uLogin" placeholder="Login">
