@@ -58,7 +58,7 @@
             'Body' => array(
                 'Text' => array(
                     // Data is required
-                    'Data' => 'hows my stream? holla back atchyo boi'
+                    'Data' => 'hows my stream? holla back atchyo boi (your friend wants you to join in at ' . $_POST["url"] . ')'
                     //'Charset' => 'string',
                 )/*
                 'Html' => array(

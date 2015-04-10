@@ -39,7 +39,8 @@
             //include ('template/aws.php');// Include our aws services
             //include ('template/util.php');// Utility class for generating liquidsoap files
             ?>
-            
+            <div class="alert alert-success" role="alert" id="status" style="display:none;">Email sent!</div>
+
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">Create Room</h3>
@@ -128,7 +129,9 @@
             }
             else {
 
-                echo '<p></p>
+                echo '
+
+                <p></p>
                 <div class="panel panel-default">
                 <div class="panel-body">
                     <b>Room Created:</b><p></p>
@@ -137,17 +140,22 @@
                   </div>
                 </div>';
             
+                // sending emails happens below
 
             echo '<p></p>
             <div class="panel panel-default">
             <div class="panel-body">
             <b>Email Room URL to Friends:</b><p></p>
-            <p><form action="ses_test.php" method="post">
+            <p><form action="ses_test.php" method="post" target="hidden_send" onsubmit="alertUser()">
                 <input type="text" name="emailAddress[]">
+                <input type="text" name="url" hidden="hidden" value="http://45.56.101.195/room.php?id=' . $id . '">
                 <input name="btnButton" type="button" value="+" onClick="JavaScript:fncCreateElement();"><br>
                 <span id="mySpan"></span>
                 <br><input name="btnSubmit" type="submit" value="Submit">
             </form>
+            
+            <iframe id="hidden_send" name="hidden_send" style="display:none" ></iframe>
+
             <br>
             </div>
             </div>
@@ -166,6 +174,10 @@
                    var myElement2 = document.createElement("br");
                    mySpan.appendChild(myElement2);
                 }
+                
+                function alertUser(){
+                     document.getElementById("status").style.display="block";
+                }
             </script> ';
             }
 
@@ -175,7 +187,6 @@
             </div>
 
             
-            <!--This part sends email using AWS SES to multiple users-->
       
 
       

@@ -1,5 +1,14 @@
 <?php
 include "base.php";
+
+$loggedIn = false;
+
+if(empty($_SESSION['LoggedIn']))
+{
+	//header('Location: http://45.56.101.195');
+	//die();
+}
+else $loggedIn = true;
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +36,7 @@ include "base.php";
 
             <?php
                 // Find out whether or not the user is logged in and pass it into Nav
-                $nav = new Nav(false);
+                $nav = new Nav($loggedIn);
                 $nav->render();
             ?>
 
