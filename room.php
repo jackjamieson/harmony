@@ -50,7 +50,12 @@
                 function recp() {
                   $("#playlist").load("template/readPlaylist.php?id=' . $gotId . '");
                 }
+                function getCurr(){
+                  $("#song").load("template/getCurrentSong.php?id=' . $gotId . '");
+
+                }
                 setInterval(recp,5000);
+                setInterval(getCurr,5000);
 
 
                 </script>
@@ -60,7 +65,8 @@
             echo '<h3>Room ' . $gotId . '</h3>';// write out the room's name
 
                 // display the playlist
-                echo '<div class="well"><h4><b>Now Playing:</b> song name</h4><p><b>Playlist:</b><br><div id="playlist"></div></div>';
+                echo '<div class="well"><h4><b>Now Playing:</b><br><div id="song"></div></h4>
+                <p><b>Playlist:</b><br><div id="playlist"></div></div>';
                 
               // draw the audio player and populate it with the appropriate stream
               echo '<p><audio autoplay="" preload="auto" name="media">
