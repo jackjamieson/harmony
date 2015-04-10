@@ -100,8 +100,9 @@
 
                 ?>
                   
-                <?php
-            include 'ses_test.php';
+            <?php
+
+            //$sesClient = new $aws->authSES();
 
             if(!isset($_POST['Submit'])){
                 echo '
@@ -135,41 +136,49 @@
           <a href="http://45.56.101.195/room.php?id=' . $id . '">http://45.56.101.195/room.php?id=' . $id . '</a></p>             
                   </div>
                 </div>';
+            
+
+            echo '<p></p>
+            <div class="panel panel-default">
+            <div class="panel-body">
+            <b>Email Room URL to Friends:</b><p></p>
+            <p><form action="ses_test.php" method="post">
+                <input type="text" name="emailAddress[]">
+                <input name="btnButton" type="button" value="+" onClick="JavaScript:fncCreateElement();"><br>
+                <span id="mySpan"></span>
+                <br><input name="btnSubmit" type="submit" value="Submit">
+            </form>
+            <br>
+            </div>
+            </div>
+
+
+            <script language="javascript"> //script for sending email
+                function fncCreateElement()
+                {
+                    var mySpan = document.getElementById("mySpan");
+
+                   var myElement1 = document.createElement("input");
+                   myElement1.setAttribute("type","text");
+                   myElement1.setAttribute("name","emailAddress[]");
+                   mySpan.appendChild(myElement1); 
+                
+                   var myElement2 = document.createElement("br");
+                   mySpan.appendChild(myElement2);
+                }
+            </script> ';
             }
+
+
             ?>    
               </div>
             </div>
 
             
             <!--This part sends email using AWS SES to multiple users-->
-            <?php include 'vendor/autoload.php'; 
-            include 'ses_test.php';
-            include 'hpaws.php';
-            ?>
+      
 
-            <form action="ses_test.php" method="post">
-                <input type="text" name="emailAddress[]">
-                <input name="btnButton" type="button" value="+" onClick="JavaScript:fncCreateElement();"><br>
-                <span id="mySpan"></span>
-                <input name="btnSubmit" type="submit" value="Submit">
-            </form>
-            <br>
-
-
-            <script language="javascript"> //script for sending email
-                function fncCreateElement()
-                {
-                    var mySpan = document.getElementById('mySpan');
-
-                   var myElement1 = document.createElement('input');
-                   myElement1.setAttribute('type',"text");
-                   myElement1.setAttribute('name',"emailAddress[]");
-                   mySpan.appendChild(myElement1);  
-
-                   var myElement2 = document.createElement('<br>');
-                   mySpan.appendChild(myElement2);
-                }
-            </script>       
+      
 
         </body>
 

@@ -2,20 +2,21 @@
 <body>
 <p>Sending email...</p>
 <?php
-	include 'vendor/autoload.php';
-    include 'hpaws.php';
 
 	/**********************************************************
 	 *  TEST AWS SES CAPABILITIES
 	 *********************************************************/
 	// Instantiates the ses client with AWS credentials
+    include("template/aws.php");
+    error_reporting(E_ALL);
 
-	use Aws\Ses\SesClient;
 
-    $hpAws = new hpaws();
+    ini_set( 'display_errors', 'On');// Turn on debugging.
 
-	$client = $hpAws->authSES();
+    $aws = new AWS();
+    $SESClient = $aws->authSES();// Authorize the S3 object.
 
+    //echo $SESClient;
     //$aws = Aws::factory('config.php');
     //$sesClient = $aws->get('ses');
     /*
@@ -36,7 +37,7 @@
     for($i=0;$i<count($_POST["emailAddress"]);$i++)
     {
         //$toAddress = $_POST["emailAddress"][$i]
-    	$result = $client->sendEmail(array(
+    	$result = $SESClient->sendEmail(array(
         // Source is required
         'Source' => 'harmony.mailservice@gmail.com',
         // Destination is required
