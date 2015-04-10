@@ -69,7 +69,7 @@
                 <p><b>Playlist:</b><br><div id="playlist"></div></div>';
                 
               // draw the audio player and populate it with the appropriate stream
-              echo '<p><audio autoplay="" preload="auto" name="media">
+              echo '<p><audio autoplay="" controls="controls" preload="auto" name="media">
                 <source src="http://54.152.139.27:8000/' . $gotId . '" type="audio/mp3"></audio>';
 
                   echo '<div class="well"><b>Share Room URL:</b><br>
