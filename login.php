@@ -19,7 +19,6 @@ if(!empty($_POST['uLogin']) && !empty($_POST['uPassword']))
 		$_SESSION['Username'] = $_POST['uLogin'];
 		$_SESSION['User_id'] = $row[0];
 		$_SESSION['EmailAddress'] = $row[2];
-		$_SESSION['Karma'] = $row[3];
 		$_SESSION['LoggedIn'] = 1;
 		
 		unset($_POST['uPassword']);
