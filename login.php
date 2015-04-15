@@ -5,7 +5,7 @@ include "base.php";
 if(!empty($_POST['uLogin']) && !empty($_POST['uPassword']))
 {	
 	//First retrieves the hashed password from the database.
-	$passQuery = $conn->prepare("SELECT user_id, password, email, karma FROM user WHERE username=?");
+	$passQuery = $conn->prepare("SELECT user_id, password, email FROM user WHERE username=?");
 
 	$passQuery->bind_param("s", $_POST['uLogin']);
 	$passQuery->execute();
