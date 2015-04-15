@@ -8,7 +8,7 @@ use Aws\Ses\SesClient;
 
 class AWS {
 
-    private $bucketName = "com.cloud.php.data";
+    private $bucketName = "user-music-folder";
 
     private $key = "ACCESS_KEY";
     private $secret = "SECRET_ACCESS_KEY";
