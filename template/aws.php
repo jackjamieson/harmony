@@ -3,6 +3,7 @@
 require __DIR__ . '/../vendor/autoload.php';// Load the dependencies from Composer
 use Aws\S3\S3Client;
 use Aws\Ses\SesClient;
+use Aws\ElasticTranscoder\ElasticTranscoderClient;
 
 //use Aws\ElasticTranscoder\ElasticTranscoderClient;
 
