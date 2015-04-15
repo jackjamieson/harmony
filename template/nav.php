@@ -126,7 +126,7 @@ class Nav {
                <ul class="nav navbar-nav navbar-right">
 
                  <li><a href="#" data-toggle="modal" data-target="#myModal">Sign In</a></li>
-                 <li><a href="#">Register</a></li>
+                 <li><a href="#" data-toggle="modal" data-target="#register">Register</a></li>
 
                </ul>
              </div><!--/.nav-collapse -->
@@ -176,7 +176,7 @@ class Nav {
         //register 
         echo
             '
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
 
@@ -189,7 +189,14 @@ class Nav {
                         <form role="form">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="uLogin" placeholder="Login">
+                                    <input type="text" class="form-control" id="uLogin" placeholder="Email">
+                                    <label for="uLogin" class="input-group-addon glyphicon glyphicon-envelope"></label>
+                                </div>
+                            </div> <!-- /.form-group -->
+                            
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="uLogin" placeholder="Username">
                                     <label for="uLogin" class="input-group-addon glyphicon glyphicon-user"></label>
                                 </div>
                             </div> <!-- /.form-group -->

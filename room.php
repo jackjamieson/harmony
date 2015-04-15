@@ -65,8 +65,8 @@
             echo '<h3>Room ' . $gotId . '</h3>';// write out the room's name
 
                 // display the playlist
-                echo '<div class="well"><h4><b>Now Playing:</b><br><div id="song"></div></h4>
-                <p><b>Playlist:</b><br><div id="playlist"></div></div>';
+                echo '<div class="well"><h4><b>Now Playing:</b><p><div id="song"></div></h4>
+                <p><b>Playlist:</b><br><div id="playlist" style="white-space:pre"></div></div>';
                 
               // draw the audio player and populate it with the appropriate stream
               echo '<p><audio autoplay="" controls="controls" preload="auto" name="media">
@@ -110,13 +110,19 @@
                   </div>
                   <div class="modal-body">
                     <div class="alert alert-success" role="alert" id="upload_status" style="display:none;">Song successfully added!</div>
+                    <div id="loading" style="display:none;"><center><b>Uploading...</b><br><img src="img/loader.gif"/></center><br></div>
+
                     Add to the playlist:<p>
                     <script type="text/javascript">
                     function upload_started(){
                      document.getElementById("upload_status").style.display="none";
+                    document.getElementById("loading").style.display="block";
+
                     }
                     function upload_completed(){
                      document.getElementById("upload_status").style.display="block";
+                    document.getElementById("loading").style.display="none";
+
                     }
 
                     var close = document.getElementById("closed");

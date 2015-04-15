@@ -8,7 +8,7 @@ use Aws\Ses\SesClient;
 
 class AWS {
 
-    private $bucketName = "com.cloud.php.data";
+    private $bucketName = "user-music-folder";
 
     private $key = "ACCESS_KEY";
     private $secret = "SECRET_ACCESS_KEY";
@@ -53,7 +53,7 @@ class AWS {
 
     }
 
-    /*public function authElasticTranscoder(){
+    public function authElasticTranscoder(){
 
         $ETClient = ElasticTranscoderClient::factory(array(
         	'key' => $this->key,
@@ -63,7 +63,7 @@ class AWS {
 
         return $ETClient;
 
-    }*/
+    }
 
     public function uploadSong($s3Client, $fileTempName, $awsFileName){
 
