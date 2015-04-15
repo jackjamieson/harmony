@@ -39,6 +39,8 @@
             //include ('template/aws.php');// Include our aws services
             //include ('template/util.php');// Utility class for generating liquidsoap files
             ?>
+            <div class="alert alert-success" role="alert" id="status" style="display:none;">Email sent!</div>
+            <div id="loading" style="display:none;"><center><b>Uploading...</b><br><img src="img/loader.gif"/></center><br></div>
             
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -103,7 +105,9 @@
 
                 ?>
                   
-                <?php
+            <?php
+
+            //$sesClient = new $aws->authSES();
 
             if(!isset($_POST['Submit'])){
                 echo '
@@ -111,7 +115,7 @@
                 <div class="panel panel-default">
                 <div class="panel-body">
                     <b>Upload a song:</b><p></p>
-                    <form action="create.php" method="post" enctype="multipart/form-data">
+                    <form action="create.php" method="post" enctype="multipart/form-data" onsubmit="upload_started()">
                         <input name="theFile" type="file" />
                         <input name="Submit" type="submit" value="Upload">
                     </form>                  
@@ -124,12 +128,33 @@
                     <b>Select a previously uploaded song:</b>
                  
                   </div>
-                </div>';
+                </div>
+                
+                <script type="text/javascript">
+                    function upload_started(){
+                     document.getElementById("loading").style.display="block";
+                    }
+                    function upload_completed(){
+                     document.getElementById("upload_status").style.display="none";
+                    }
+
+                    var close = document.getElementById("closed");
+
+                    function reset() {
+                      document.getElementById("upload_status").style.display="none";
+
+
+                    }
+
+                    close.onclick = reset;
+                </script>';
                         
             }
             else {
+                    //display room id url
+                echo '
 
-                echo '<p></p>
+                <p></p>
                 <div class="panel panel-default">
                 <div class="panel-body">
                     <b>Room Created:</b><p></p>
@@ -137,20 +162,57 @@
           <a href="http://45.56.101.195/room.php?id=' . $id . '">http://45.56.101.195/room.php?id=' . $id . '</a></p>             
                   </div>
                 </div>';
-            }
-            ?>
-                  
-                
-                  
-                  
-                  
-              </div>
-            </div> 
             
-             
-             
-     
+                // sending emails happens below
+
+            echo '<p></p>
+            <div class="panel panel-default">
+            <div class="panel-body">
+            <b>Email Room URL to Friends:</b><p></p>
+            <p><form action="ses_test.php" method="post" target="hidden_send" onsubmit="alertUser()">
+                <input type="text" name="emailAddress[]">
+                <input type="text" name="url" hidden="hidden" value="http://45.56.101.195/room.php?id=' . $id . '">
+                <input name="btnButton" type="button" value="+" onClick="JavaScript:fncCreateElement();"><br>
+                <span id="mySpan"></span>
+                <br><input name="btnSubmit" type="submit" value="Submit">
+            </form>
+            
+            <iframe id="hidden_send" name="hidden_send" style="display:none" ></iframe>
+
+            <br>
+            </div>
+            </div>
+
+
+            <script language="javascript"> //script for sending email
+                function fncCreateElement()
+                {
+                    var mySpan = document.getElementById("mySpan");
+
+                   var myElement1 = document.createElement("input");
+                   myElement1.setAttribute("type","text");
+                   myElement1.setAttribute("name","emailAddress[]");
+                   mySpan.appendChild(myElement1); 
                 
+                   var myElement2 = document.createElement("br");
+                   mySpan.appendChild(myElement2);
+                }
+                
+                function alertUser(){
+                     document.getElementById("status").style.display="block";
+                }
+            </script> ';
+            }
+
+
+            ?>    
+              </div>
+            </div>
+
+            
+      
+
+      
 
         </body>
 
