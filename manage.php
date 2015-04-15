@@ -84,6 +84,17 @@ if(empty($_SESSION['LoggedIn']))
             <a href="#" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</a>
           </div>
         </div>
+		
+		<div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Upload + Transcode Music</h3>
+          </div>
+          <div class="panel-body">
+            Upload non-mp3 songs here that you might want to use in a playlist. We will convert it to mp3 for you!
+            <p></p>
+            <a href="#" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-cloud-upload"></span> Upload + Transcode</a>
+          </div>
+        </div>
                 
 
         </body>
