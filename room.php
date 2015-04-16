@@ -110,6 +110,8 @@
                   </div>
                   <div class="modal-body">
                     <div class="alert alert-success" role="alert" id="upload_status" style="display:none;">Song successfully added!</div>
+                    <div class="alert alert-warning" role="alert" id="failure" style="display:none;">Song must be an MP3! Try transcoding it first.</div>
+
                     <div id="loading" style="display:none;"><center><b>Uploading...</b><br><img src="img/loader.gif"/></center><br></div>
 
                     Add to the playlist:<p>
@@ -124,11 +126,18 @@
                     document.getElementById("loading").style.display="none";
 
                     }
+                        
+                    function upload_failed(){
+                        document.getElementById("failure").style.display="block";   
+                        document.getElementById("loading").style.display="none";
+
+                    }
 
                     var close = document.getElementById("closed");
 
                     function reset() {
                       document.getElementById("upload_status").style.display="none";
+                        document.getElementById("failed").style.display="none";   
 
 
                     }

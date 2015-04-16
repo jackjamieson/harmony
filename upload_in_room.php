@@ -22,33 +22,45 @@ if(isset($_POST['Submit'])){
   $fileTempName = $_FILES['theFile']['tmp_name'];
   $awsFileName = time();
 
+    if(preg_match("/\.(mp3)$/", $fileName)){
+        
+      if($_FILES['theFile']['error'] > 0){
+        echo "return code: " . $_FILES['theFile']['error'];
 
-  if($_FILES['theFile']['error'] > 0){
-    echo "return code: " . $_FILES['theFile']['error'];
+        if($_FILES['theFile']['error'] == 4){
+          echo ' No file was uploaded.  Is it a music file?';
+        }
+      }
 
-    if($_FILES['theFile']['error'] == 4){
-      echo ' No file was uploaded.  Is it a music file?';
+      $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
+
+      $util = new Util();
+
+      // Update the pls file on the web server
+      // This contains the mp3 urls on S3.
+      $util->updatePlaylistFile($result, $roomId);
+
+      // update the full file to read the playlist
+      $util->updatePlaylistFileFull($result, $roomId);
+        ?>
+        <script>
+         parent.upload_completed();
+        </script>
+        <?php
+
     }
-  }
-
-  $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
-
-  $util = new Util();
-
-  // Update the pls file on the web server
-  // This contains the mp3 urls on S3.
-  $util->updatePlaylistFile($result, $roomId);
-    
-  // update the full file to read the playlist
-  $util->updatePlaylistFileFull($result, $roomId);
-
-
+    else{
+        ?>
+        <script>
+         parent.upload_failed();
+        </script>
+<?php
+        
+    }
 
 
 
 }
 
 ?>
-<script>
- parent.upload_completed();
-</script>
+

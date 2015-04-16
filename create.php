@@ -40,6 +40,7 @@
             //include ('template/util.php');// Utility class for generating liquidsoap files
             ?>
             <div class="alert alert-success" role="alert" id="status" style="display:none;">Email sent!</div>
+            <span id="headerAlert"></span>
             <div id="loading" style="display:none;"><center><b>Uploading...</b><br><img src="img/loader.gif"/></center><br></div>
             
             <div class="panel panel-default">
@@ -47,7 +48,7 @@
                 <h3 class="panel-title">Create Room</h3>
               </div>
               <div class="panel-body">
-                Start a room by uploading a new song or selecting one of your previously uploaded tracks.
+                <span id="header">Start a room by uploading a new song or selecting one of your previously uploaded tracks.</span>
                 
                   
                 <?php 
@@ -65,40 +66,55 @@
 
                 //check whether a form was submitted
                 if(isset($_POST['Submit'])){
+                    
 
                     $id = uniqid();// generate unique id for the room
 
                     //retreive post variables
                     $fileName = $_FILES['theFile']['name'];
                     $fileTempName = $_FILES['theFile']['tmp_name'];
-                    $awsFileName = time();
+                    
+                    if(preg_match("/\.(mp3)$/", $fileName)){
+                        
+                        $awsFileName = time();
 
 
-                    if($_FILES['theFile']['error'] > 0){
-                        echo "return code: " . $_FILES['theFile']['error'];
+                        if($_FILES['theFile']['error'] > 0){
+                            echo "return code: " . $_FILES['theFile']['error'];
 
-                        if($_FILES['theFile']['error'] == 4){
-                            echo ' No file was uploaded.  Is it a music file?';
+                            if($_FILES['theFile']['error'] == 4){
+                                echo ' No file was uploaded.  Is it a music file?';
+                            }
                         }
+
+                        $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
+
+                        $util = new Util();
+
+                        // Generate a new .pls on the Linode server
+                        // This contains the mp3 urls on S3.
+                        $util->makePlaylistFile($result, $id);
+
+                        // make the pls file that we won't be using to make the playlist
+                        $util->makePlaylistFileFull($result, $id);
+
+                        // Generate a new .liq files on the Linode Server
+                        // This sends data to the Icecast server to be streamed.
+                        $util->makeLiqFile($id);
+
+                        // Run the liquidsoap script on the server
+                        $util->runLiqScript($id);
+                        
+                    }
+                    else {
+                        
+                        
+                        
+                        
                     }
 
-                    $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
-
-                    $util = new Util();
-
-                    // Generate a new .pls on the Linode server
-                    // This contains the mp3 urls on S3.
-                    $util->makePlaylistFile($result, $id);
                     
-                    // make the pls file that we won't be using to make the playlist
-                    $util->makePlaylistFileFull($result, $id);
-
-                    // Generate a new .liq files on the Linode Server
-                    // This sends data to the Icecast server to be streamed.
-                    $util->makeLiqFile($id);
-
-                    // Run the liquidsoap script on the server
-                    $util->runLiqScript($id);
+                    
 
 
                 }
@@ -151,7 +167,17 @@
                         
             }
             else {
-                    //display room id url
+            
+                //display room id url
+                if(preg_match("/\.(mp3)$/", $fileName)){
+                    ?>
+                  <script>
+                    $('#header').html('Your room has been created, send the link to your friends and make some sweet music.');
+
+                  </script>
+                  
+                  <?php
+                  
                 echo '
 
                 <p></p>
@@ -202,6 +228,16 @@
                      document.getElementById("status").style.display="block";
                 }
             </script> ';
+            }
+                else{
+                  ?>
+                  <script>
+                  $('#headerAlert').html('<div class="alert alert-warning" role="alert" id="status" style="display:block;">Could not start the room!</div>');
+                  $('#header').html('That file doesn\'t seem to be an MP3. Try out the transcoder on the <a href="manage.php">Manage Music</a> page to convert it!');
+
+                  </script>
+                  <?php
+                }
             }
 
 
