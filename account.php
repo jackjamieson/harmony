@@ -1,3 +1,15 @@
+<?php
+include "base.php"; //Handles session start and database interaction.
+
+//If LoggedIn not set, return to home screen.
+if(empty($_SESSION['LoggedIn']))
+{
+	header('Location: index.php');
+	die();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -52,7 +64,7 @@
                 <tbody>
                     <tr>
                         <td><b>Username: </b></td>
-                        <td><input disabled="" type="text" class="form-control" value="User123" aria-describedby="basic-addon1"></td>
+                        <td><input disabled="" type="text" class="form-control" value="<?php echo $_SESSION['Username'] ?>" aria-describedby="basic-addon1"></td>
                     </tr>
                     <tr>
                         <td><b>Email: </b></td>

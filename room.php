@@ -1,3 +1,15 @@
+<?php
+include "base.php"; //Handles session start and database interaction.
+
+//If LoggedIn not set, return to home screen.
+if(empty($_SESSION['LoggedIn']))
+{
+	header('Location: index.php');
+	die();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -339,7 +351,7 @@
                     
                   </div>
                     <div class="panel">
-                      <input type="text" name="name" id="name" placeholder="Name" maxlength="10" style="width:20%"  />
+                      <input type="text" disabled="" name="name" id="name" value="<?php echo $_SESSION['Username'] ?>" maxlength="10" style="width:20%"  />
                       <input type="text" name="message" id="message" placeholder="Message" maxlength="80" style="width:60%" />
                       <button id="send-btn">Send</button>
                     </div>
