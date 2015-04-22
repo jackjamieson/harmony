@@ -42,11 +42,29 @@ class UserManager {
 		$updateQuery->bind_param("si", $newEmail, $userId);
 
 		if($updateQuery->execute() === TRUE)
+		{
+			$_SESSION['EmailAddress'] = $newEmail;
 			return TRUE;
+		}
 		else
 			return FALSE;
 	}
 
+	public function checkPassword($userId, $pass)
+	{	
+		//First retrieves the hashed password from the database.
+		$passQuery = $this->database->prepare("SELECT user_id, password, email FROM user WHERE user_id=?");
+
+		$passQuery->bind_param("s", $userId);
+		$passQuery->execute();
+		$result= $passQuery->get_result();
+
+		$row = $result->fetch_row();
+		$hash = $row[1];
+
+		return password_verify($pass, $hash);
+		
+	}
 	
 	//Change the password.
 	public function changePassword($userId, $newPassword)
