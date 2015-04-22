@@ -5,8 +5,8 @@
 //     2. S3 Input/Output buckets already set up (must be on same account as Credentials)
 //     3. Corresponding PipelineID set up and provided
 	
-include 'vendor/autoload.php';
-include 'aws.php';
+//include 'vendor/autoload.php';
+//include 'aws.php';
 	
 class ElasticTranscoderJob
 {
@@ -15,11 +15,11 @@ class ElasticTranscoderJob
 	private $folder; //user folder for input/output
 	
 	//constructor - performs conversion
-	public function __construct($input, $output, $folder)
+	public function __construct($input, $output)
 	{
 		$this->input = $input;
 		$this->output = $output;
-		$this->folder = $folder.'/';
+		$this->folder = 'Music'.'/';
 		
 		$aws = new AWS();
 		$client = $aws->authElasticTranscoder();
@@ -43,9 +43,10 @@ class ElasticTranscoderJob
 			)
 		));
 		
-		echo "<br>";
-		echo "FILE CONVERTED. "; //prints if conversion was successful
-		echo "<br>";
+		//remove this if it works
+		//echo "<br>";
+		//echo "FILE CONVERTED. "; //prints if conversion was successful
+		//echo "<br>";
 	}
 	
 	public function __toString()
