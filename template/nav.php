@@ -151,14 +151,14 @@ class Nav {
 
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="uLogin" name="uLogin" placeholder="Login">
+                                    <input type="text" class="form-control" id="uLogin" name="Username" placeholder="Login">
                                     <label for="uLogin" class="input-group-addon glyphicon glyphicon-user"></label>
                                 </div>
                             </div> <!-- /.form-group -->
 
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="uPassword" name="uPassword" placeholder="Password">
+                                    <input type="password" class="form-control" id="uPassword" name="Password" placeholder="Password">
                                     <label for="uPassword" class="input-group-addon glyphicon glyphicon-lock"></label>
                                 </div> <!-- /.input-group -->
                             </div> <!-- /.form-group -->
@@ -186,33 +186,34 @@ class Nav {
                     </div> <!-- /.modal-header -->
 
                     <div class="modal-body">
-                        <form role="form">
-                            <div class="form-group">
+                        <form role="form" method="post" action="register.php">
+    
+                        <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="uLogin" placeholder="Email">
-                                    <label for="uLogin" class="input-group-addon glyphicon glyphicon-envelope"></label>
+                                    <input type="text" name="Email" class="form-control" id="uEmail" placeholder="Email">
+                                    <label for="uEmail" class="input-group-addon glyphicon glyphicon-envelope"></label>
                                 </div>
                             </div> <!-- /.form-group -->
                             
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="uLogin" placeholder="Username">
+                                    <input type="text" name="Username" class="form-control" id="uLogin" placeholder="Username">
                                     <label for="uLogin" class="input-group-addon glyphicon glyphicon-user"></label>
                                 </div>
                             </div> <!-- /.form-group -->
 
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="uPassword" placeholder="Password">
+                                    <input type="password" name="Password" class="form-control" id="uPassword" placeholder="Password">
                                     <label for="uPassword" class="input-group-addon glyphicon glyphicon-lock"></label>
                                 </div> <!-- /.input-group -->
                             </div> <!-- /.form-group -->
-                        </form>
 
+                        <button type="submit" class="form-control btn btn-primary">Ok</button>
+                        </form>
                     </div> <!-- /.modal-body -->
 
                     <div class="modal-footer">
-                        <button class="form-control btn btn-primary">Ok</button>
 
                         <div class="progress">
                             <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="100" style="width: 0%;">
