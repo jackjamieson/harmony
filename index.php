@@ -1,14 +1,11 @@
 <?php
-include "base.php";
+session_start();
 
-$loggedIn = false;
 
 if(empty($_SESSION['LoggedIn']))
-{
-	//header('Location: http://45.56.101.195');
-	//die();
-}
-else $loggedIn = true;
+	$loggedIn = FALSE;
+else
+	$loggedIn = TRUE;
 ?>
 
 <!DOCTYPE html>
