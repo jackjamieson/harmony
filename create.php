@@ -33,10 +33,10 @@ if(empty($_SESSION['LoggedIn']))
             <!-- css/html nav !-->
             <!-- check for login before we draw the nav !-->
             <?php include ('template/nav.php') ?>
-            
-            <?php 
+
+            <?php
                 // Find out whether or not the user is logged in and pass it into Nav
-                $nav = new Nav(true); 
+                $nav = new Nav(true);
                 $nav->render();
             ?>
 
@@ -54,16 +54,16 @@ if(empty($_SESSION['LoggedIn']))
             <div class="alert alert-success" role="alert" id="status" style="display:none;">Email sent!</div>
             <span id="headerAlert"></span>
             <div id="loading" style="display:none;"><center><b>Uploading...</b><br><img src="img/loader.gif"/></center><br></div>
-            
+
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">Create Room</h3>
               </div>
               <div class="panel-body">
                 <span id="header">Start a room by uploading a new song or selecting one of your previously uploaded tracks.</span>
-                
-                  
-                <?php 
+
+
+                <?php
 
                 ini_set( 'display_errors', 'On');// Turn on debugging.
 
@@ -78,16 +78,16 @@ if(empty($_SESSION['LoggedIn']))
 
                 //check whether a form was submitted
                 if(isset($_POST['Submit'])){
-                    
+
 
                     $id = uniqid();// generate unique id for the room
 
                     //retreive post variables
                     $fileName = $_FILES['theFile']['name'];
                     $fileTempName = $_FILES['theFile']['tmp_name'];
-                    
+
                     if(preg_match("/\.(mp3)$/", $fileName)){
-                        
+
                         $awsFileName = time();
 
 
@@ -116,23 +116,23 @@ if(empty($_SESSION['LoggedIn']))
 
                         // Run the liquidsoap script on the server
                         $util->runLiqScript($id);
-                        
+
                     }
                     else {
-                        
-                        
-                        
-                        
+
+
+
+
                     }
 
-                    
-                    
+
+
 
 
                 }
 
                 ?>
-                  
+
             <?php
 
             //$sesClient = new $aws->authSES();
@@ -145,19 +145,22 @@ if(empty($_SESSION['LoggedIn']))
                     <b>Upload a song:</b><p></p>
                     <form action="create.php" method="post" enctype="multipart/form-data" onsubmit="upload_started()">
                         <input name="theFile" type="file" />
-                        <input name="Submit" type="submit" value="Upload">
-                    </form>                  
+                        <input name="Submit" type="submit" value="Upload" id="actualUpload" style="display:none;">
+                    </form>
+										<p></p>
+										<button class="btn btn-primary btn-primary" id="uploadreg"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</a>
+
                   </div>
                 </div>
-                  
+
                 <p></p>
                 <div class="panel panel-default">
                 <div class="panel-body">
                     <b>Select a previously uploaded song:</b>
-                 
+
                   </div>
                 </div>
-                
+
                 <script type="text/javascript">
                     function upload_started(){
                      document.getElementById("loading").style.display="block";
@@ -176,10 +179,10 @@ if(empty($_SESSION['LoggedIn']))
 
                     close.onclick = reset;
                 </script>';
-                        
+
             }
             else {
-            
+
                 //display room id url
                 if(preg_match("/\.(mp3)$/", $fileName)){
                     ?>
@@ -187,9 +190,9 @@ if(empty($_SESSION['LoggedIn']))
                     $('#header').html('Your room has been created, send the link to your friends and make some sweet music.');
 
                   </script>
-                  
+
                   <?php
-                  
+
                 echo '
 
                 <p></p>
@@ -197,10 +200,10 @@ if(empty($_SESSION['LoggedIn']))
                 <div class="panel-body">
                     <b>Room Created:</b><p></p>
                     <p>Your room is ready:<br>
-          <a href="http://45.56.101.195/room.php?id=' . $id . '">http://45.56.101.195/room.php?id=' . $id . '</a></p>             
+          <a href="http://45.56.101.195/room.php?id=' . $id . '">http://45.56.101.195/room.php?id=' . $id . '</a></p>
                   </div>
                 </div>';
-            
+
                 // sending emails happens below
 
             echo '<p></p>
@@ -214,7 +217,7 @@ if(empty($_SESSION['LoggedIn']))
                 <span id="mySpan"></span>
                 <br><input name="btnSubmit" type="submit" value="Submit">
             </form>
-            
+
             <iframe id="hidden_send" name="hidden_send" style="display:none" ></iframe>
 
             <br>
@@ -230,12 +233,12 @@ if(empty($_SESSION['LoggedIn']))
                    var myElement1 = document.createElement("input");
                    myElement1.setAttribute("type","text");
                    myElement1.setAttribute("name","emailAddress[]");
-                   mySpan.appendChild(myElement1); 
-                
+                   mySpan.appendChild(myElement1);
+
                    var myElement2 = document.createElement("br");
                    mySpan.appendChild(myElement2);
                 }
-                
+
                 function alertUser(){
                      document.getElementById("status").style.display="block";
                 }
@@ -253,15 +256,21 @@ if(empty($_SESSION['LoggedIn']))
             }
 
 
-            ?>    
+            ?>
               </div>
             </div>
 
-            
-      
 
-      
+
+
+
 
         </body>
+
+				<script>
+				$("#uploadreg").click(function(){
+					$("#actualUpload").click();
+				});
+				</script>
 
 </html>

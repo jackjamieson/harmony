@@ -53,10 +53,10 @@ if(empty($_SESSION['LoggedIn']))
             <?php
             // if the url has an id query then use that to find the appropriate stream
             if(isset($_GET["id"])){
-                
+
                 $gotId = $_GET["id"];
 
-                echo 
+                echo
                 '
                 <script type="text/javascript">
                 function recp() {
@@ -79,7 +79,7 @@ if(empty($_SESSION['LoggedIn']))
                 // display the playlist
                 echo '<div class="well"><h4><b>Now Playing:</b><p><div id="song"></div></h4>
                 <p><b>Playlist:</b><br><div id="playlist" style="white-space:pre"></div></div>';
-                
+
               // draw the audio player and populate it with the appropriate stream
               echo '<p><audio autoplay="" controls="controls" preload="auto" name="media">
                 <source src="http://54.152.139.27:8000/' . $gotId . '" type="audio/mp3"></audio>';
@@ -138,9 +138,9 @@ if(empty($_SESSION['LoggedIn']))
                     document.getElementById("loading").style.display="none";
 
                     }
-                        
+
                     function upload_failed(){
-                        document.getElementById("failure").style.display="block";   
+                        document.getElementById("failure").style.display="block";
                         document.getElementById("loading").style.display="none";
 
                     }
@@ -149,7 +149,7 @@ if(empty($_SESSION['LoggedIn']))
 
                     function reset() {
                       document.getElementById("upload_status").style.display="none";
-                        document.getElementById("failed").style.display="none";   
+                        document.getElementById("failed").style.display="none";
 
 
                     }
@@ -159,8 +159,10 @@ if(empty($_SESSION['LoggedIn']))
                     </p>
                     <form action="upload_in_room.php?id=<?php echo $gotId; ?>" method="post" enctype="multipart/form-data" target="hidden_upload" onsubmit="upload_started()">
                         <input name="theFile" type="file" />
-                        <input name="Submit" type="submit" value="Upload">
+                        <input name="Submit" type="submit" value="Upload" id="actualUploadinRoom" style="display:none;">
                     </form>
+										<p></p>
+										<button class="btn btn-primary btn-primary" id="uploadreginRoom"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</a>
                     <!-- upload the file to a hidden iframe so we don't have to reload the page !-->
                     <iframe id="hidden_upload" name="hidden_upload" style="display:none" ></iframe>
 
@@ -252,7 +254,7 @@ if(empty($_SESSION['LoggedIn']))
                       //convert and send data to server
                       websocket.send(JSON.stringify(msg));
                     });
-                      
+
                       $('#message').on("keypress", function(e) {
                                 if (e.keyCode == 13) {
                                     scrolled=scrolled+300;
@@ -261,7 +263,7 @@ if(empty($_SESSION['LoggedIn']))
                                             scrollTop:  scrolled
                                        });
 
-                                
+
                       var mymessage = $('#message').val(); //get message text
                       var myname = $('#name').val(); //get user name
                       var roomID = getQueryVariable("id");
@@ -348,7 +350,7 @@ if(empty($_SESSION['LoggedIn']))
                   <div id="rid"></div>
                   <div class="chat_wrapper">
                     <div class="message_box" id="message_box" style="height:200px; overflow:auto;"></div>
-                    
+
                   </div>
                     <div class="panel">
                       <input type="text" disabled="" name="name" id="name" value="<?php echo $_SESSION['Username'] ?>" maxlength="10" style="width:20%"  />
@@ -368,5 +370,11 @@ if(empty($_SESSION['LoggedIn']))
             </div>
 
           </body>
+
+					<script>
+					$("#uploadreginRoom").click(function(){
+						$("#actualUploadinRoom").click();
+					});
+					</script>
 
           </html>

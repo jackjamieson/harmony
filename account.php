@@ -4,7 +4,7 @@ session_start();
 include "UserManager.php";
 UserManager::checkLogin();
 
-//Connect to database to allow changes to email and password. 
+//Connect to database to allow changes to email and password.
 $manager = new UserManager();
 $databaseConnected = $manager->connectToDatabase(); //Handle errors
 
@@ -64,17 +64,27 @@ if(isset($_POST['newPass']))
 
         <body>
 
+				<script>
+				function success(){
+					document.getElementById("update_success").style.display="block";
+				}
+
+				function fail(){
+					document.getElementById("update_fail").style.display="block";
+				}
+				</script>
+
             <!-- css/html nav !-->
             <!-- check for login before we draw the nav !-->
             <?php include ('template/nav.php') ?>
-            
-            <?php 
+
+            <?php
                 // Find out whether or not the user is logged in and pass it into Nav
-                $nav = new Nav(true); 
+                $nav = new Nav(true);
                 $nav->render();
             ?>
-            
-            
+
+
             <?php
 
             error_reporting(E_ALL);
@@ -85,7 +95,9 @@ if(isset($_POST['newPass']))
             //include ('template/aws.php');// Include our aws services
             //include ('template/util.php');// Utility class for generating liquidsoap files
             ?>
-            
+						<div class="alert alert-success alert-dismissible" role="alert" id="update_success" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Account updated!</div>
+						<div class="alert alert-warning alert-dismissible" role="alert" id="update_fail" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Failed to update account.</div>
+
          <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">Manage Account</h3>
@@ -118,9 +130,10 @@ if(isset($_POST['newPass']))
 
 				<?php
 				if($passwordChanged === TRUE)
-					echo '<td>Password updated!</td>';
-				else if ($passwordChanged === FALSE)
-					echo '<td>Update failed</td>';
+					echo '<script>success();</script>';
+				else if ($passwordChanged === FALSE){
+					echo '<script>fail();</script>';
+				}
 				?>
 			    </tr>
 			    <tr>
@@ -129,16 +142,18 @@ if(isset($_POST['newPass']))
 			    </tr>
 			  </tbody>
 		      </table>
-              
+
               <input type="submit" value="Update Account" class="btn btn-primary btn-primary"/>
-	
-        	</form>    
+
+        	</form>
 
 <!-- <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> -->
           </div>
         </div>
-            
-                
+
+
+
+
 
         </body>
 

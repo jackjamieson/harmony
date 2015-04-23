@@ -15,19 +15,19 @@ public function __construct($location){
     $sock = fsockopen($t['host'], $t['port'], $errno, $errstr, 5);
     $path = isset($t['path'])?$t['path']:'/';
     if ($sock){
-        $request = 'GET '.$path.' HTTP/1.0' . CRLF . 
-            'Host: ' . $t['host'] . CRLF . 
-            'Connection: Close' . CRLF . 
-            'User-Agent: ' . $this->useragent . CRLF . 
-            'Accept: */*' . CRLF . 
+        $request = 'GET '.$path.' HTTP/1.0' . CRLF .
+            'Host: ' . $t['host'] . CRLF .
+            'Connection: Close' . CRLF .
+            'User-Agent: ' . $this->useragent . CRLF .
+            'Accept: */*' . CRLF .
             'icy-metadata: 1'.CRLF.
             'icy-prebuffer: 65536'.CRLF.
             (isset($t['user'])?'Authorization: Basic '.base64_encode($t['user'].':'.$t['pass']).CRLF:'').
             'X-TipOfTheDay: Winamp "Classic" rulez all of them.' . CRLF . CRLF;
         if (fwrite($sock, $request)){
             $theaders = $line = '';
-            while (!feof($sock)){ 
-                $line = fgets($sock, 4096); 
+            while (!feof($sock)){
+                $line = fgets($sock, 4096);
                 if('' == trim($line)){
                     break;
                 }
@@ -35,7 +35,7 @@ public function __construct($location){
             }
             $theaders = explode(CRLF, $theaders);
             foreach ($theaders as $header){
-                $t = explode(':', $header); 
+                $t = explode(':', $header);
                 if (isset($t[0]) && trim($t[0]) != ''){
                     $name = preg_replace('/[^a-z][^a-z0-9]*/i','', strtolower(trim($t[0])));
                     array_shift($t);
@@ -55,17 +55,18 @@ public function __construct($location){
                     $data .= fgetc($sock);
                     if (strlen($data) >= $metainterval) break;
                 }
-               $this->print_data($data);
+               //$this->print_data($data);
                 $matches = array();
                 preg_match_all('/([\x00-\xff]{2})\x0\x0([a-z]+)=/i', $data, $matches, PREG_OFFSET_CAPTURE);
                preg_match_all('/([a-z]+)=([a-z0-9\(\)\[\]., ]+)/i', $data, $matches, PREG_SPLIT_NO_EMPTY);
-               echo '<pre>';var_dump($matches);echo '</pre>';
+               //echo '<pre>';var_dump($matches);echo '</pre>';
+               echo 'This room is no longer active.';
                 $title = $artist = '';
                 foreach ($matches[0] as $nr => $values){
                   $offset = $values[1];
-                  $length = ord($values[0]{0}) + 
-                            (ord($values[0]{1}) * 256)+ 
-                            (ord($values[0]{2}) * 256*256)+ 
+                  $length = ord($values[0]{0}) +
+                            (ord($values[0]{1}) * 256)+
+                            (ord($values[0]{2}) * 256*256)+
                             (ord($values[0]{3}) * 256*256*256);
                   $info = substr($data, $offset + 4, $length);
                   $seperator = strpos($info, '=');
@@ -73,7 +74,7 @@ public function __construct($location){
                     if (substr($info, 0, $seperator) == 'title') $title = substr($info, $seperator + 1);
                     if (substr($info, 0, $seperator) == 'artist') $artist = substr($info, $seperator + 1);
                 }
-                $this->metadata['streamtitle'] = $artist . ' - ' . $title;
+                //$this->metadata['streamtitle'] = $artist . ' - ' . $title;
             }else{
                 $metainterval = $this->headers['icymetaint'];
                 $intervals = 0;

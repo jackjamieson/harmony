@@ -26,30 +26,38 @@ UserManager::checkLogin();
         </head>
 
         <body>
-            
+
         <script type="text/javascript">
             function upload_started(){
              document.getElementById("loading").style.display="block";
+            }
+            function upload_started_lower(){
+              document.getElementById("loading2").style.display="block";
+
             }
             function upload_completed(){
              document.getElementById("upload_status").style.display="block";
              document.getElementById("loading").style.display="none";
 
             }
+            function upload_fail(){
+              document.getElementById("upload_fail").style.display="block";
+
+            }
         </script>
-            <a name="top"></a> 
-            
+            <a name="top"></a>
+
             <!-- css/html nav !-->
             <!-- check for login before we draw the nav !-->
             <?php include ('template/nav.php') ?>
-            
-            <?php 
+
+            <?php
                 // Find out whether or not the user is logged in and pass it into Nav
-                $nav = new Nav(true); 
+                $nav = new Nav(true);
                 $nav->render();
             ?>
-            
-            
+
+
             <?php
 
             error_reporting(E_ALL);
@@ -60,10 +68,12 @@ UserManager::checkLogin();
             //include ('template/aws.php');// Include our aws services
             //include ('template/util.php');// Utility class for generating liquidsoap files
             ?>
-            
+
             <div class="alert alert-success alert-dismissible" role="alert" id="upload_status" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Song Uploaded!</div>
             <span id="headerAlert"></span>
-            
+            <div class="alert alert-warning alert-dismissible" role="alert" id="upload_fail" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Upload failed.</div>
+
+
          <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">Manage Music</h3>
@@ -85,11 +95,11 @@ UserManager::checkLogin();
               <a href="#" class="btn btn-primary btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
           </div>
         </div>
-                        
-            
+
+
         <div id="loading" style="display:none;"><center><b>Uploading...</b><br><img src="img/loader.gif"/></center><br></div>
 
-            
+
          <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">Upload Music</h3>
@@ -107,9 +117,9 @@ UserManager::checkLogin();
             //include ('template/aws.php');// Include our aws services
             //include ('template/util.php');// Utility class for generating liquidsoap files
             ?>
-   
-            
-                  
+
+
+
                 <?php
 
                 ini_set( 'display_errors', 'On');// Turn on debugging.
@@ -125,16 +135,16 @@ UserManager::checkLogin();
 
                 //check whether a form was submitted
                 if(isset($_POST['Submit'])){
-                    
+
 
                     $id = uniqid();// generate unique id for the room
 
                     //retreive post variables
                     $fileName = $_FILES['theFile']['name'];
                     $fileTempName = $_FILES['theFile']['tmp_name'];
-                    
+
                     if(preg_match("/\.(mp3)$/", $fileName)){
-                        
+
                         $awsFileName = time();
 
 
@@ -145,10 +155,15 @@ UserManager::checkLogin();
                                 echo ' No file was uploaded.  Is it a music file?';
                             }
                         }
-
+                        try{
                         $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
 
                         echo '<script>upload_completed();</script>';
+                      }
+                      catch(Exception $e){
+                        echo '<script>upload_fail();</script>';
+
+                      }
                         //$util = new Util();
 
                         // Generate a new .pls on the Linode server
@@ -164,21 +179,25 @@ UserManager::checkLogin();
 
                         // Run the liquidsoap script on the server
                         //$util->runLiqScript($id);
-                        
+
                     }
-        
-                }              
+                    else {
+                      echo '<script>upload_fail();</script>';
+                    }
+
+                }
                   ?>
-              
+
                     <form action="manage.php" method="post" enctype="multipart/form-data" onsubmit="upload_started()">
                         <input name="theFile" type="file" />
-                        <input name="Submit" type="submit" value="Upload">
+                        <input name="Submit" type="submit" value="Upload" id="actualSubmit" value="Upload" style="display:none;">
                     </form>
-              
-            <!--<a href="#" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</a>!-->
+            <p></p>
+            <button class="btn btn-primary btn-primary" id="uploadreg"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</a>
           </div>
         </div>
-		
+        <div id="loading2" style="display:none;"><center><b>Uploading...</b><br><img src="img/loader.gif"/></center><br></div>
+
 		<div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">Upload + Transcode Music</h3>
@@ -186,7 +205,7 @@ UserManager::checkLogin();
           <div class="panel-body">
             Upload non-mp3 songs here that you might want to use in a playlist. We will convert it to mp3 for you!
             <p></p>
-			
+
 			<?php
 
                 ini_set( 'display_errors', 'On');// Turn on debugging.
@@ -203,30 +222,29 @@ UserManager::checkLogin();
 
                 //check whether a form was submitted
                 if(isset($_POST['Transcode'])){
-                    
+
 
                     $id = uniqid();// generate unique id for the room
 
                     //retreive post variables
                     $fileName = $_FILES['theFile']['name'];
                     $fileTempName = $_FILES['theFile']['tmp_name'];
-                    
+
                     if(!preg_match("/\.(mp3)$/", $fileName)){
-                        
+
                         $awsFileName = time();
 
 
-                        if($_FILES['theFile']['error'] > 0){
-                            echo "return code: " . $_FILES['theFile']['error'];
+                        try{
+                          $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
 
-                            if($_FILES['theFile']['error'] == 4){
-                                echo ' No file was uploaded.  Is it a music file?';
-                            }
+                          echo '<script>upload_completed();</script>';
                         }
+                        catch(Exception $e2)
+                        {
+                          echo '<script>upload_fail();</script>';
 
-                        $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
-
-                        echo '<script>upload_completed();</script>';
+                        }
                         //$util = new Util();
 
                         // Generate a new .pls on the Linode server
@@ -242,29 +260,43 @@ UserManager::checkLogin();
 
                         // Run the liquidsoap script on the server
                         //$util->runLiqScript($id);
-						
+
 						/************************************
 						 *          TRANSCODE IT
 						 ***********************************/
                         $key = $awsFileName.'.mp3';
 						$job = new ElasticTranscoderJob($key,$key);
                     }
-        
-                }              
+                    else{
+                      echo '<script>upload_fail();</script>';
+
+                    }
+
+                }
                   ?>
-              
-                    <form action="manage.php" method="post" enctype="multipart/form-data" onsubmit="upload_started()">
+
+                    <form action="manage.php" method="post" enctype="multipart/form-data" onsubmit="upload_started_lower()">
                         <input name="theFile" type="file" />
-                        <input name="Transcode" type="submit" value="Upload + Transcode">
+                        <input name="Transcode" type="submit" value="Upload + Transcode" id="actualTranscode" style="display:none;">
                     </form>
-			
-            <!--<a href="#" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-cloud-upload"></span> Upload + Transcode</a>-->
+            <p></p>
+            <button class="btn btn-primary btn-primary" id="transcodereg"><span class="glyphicon glyphicon-cloud-upload"></span> Upload + Transcode</a>
           </div>
         </div>
-                
+
 
         </body>
-        
+
+        <script>
+        $("#uploadreg").click(function(){
+          $("#actualSubmit").click();
+        });
+
+        $("#transcodereg").click(function(){
+          $("#actualTranscode").click();
+        });
+        </script>
+
 
 
 </html>
