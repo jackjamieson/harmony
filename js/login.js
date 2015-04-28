@@ -39,7 +39,7 @@ $(document).ready(function(){
 
 		inputs.removeAttr("disabled");
 
-		title.text("Log in");
+		title.text("Register");
 
 		progressBar.css({ "width" : "0%" });
 

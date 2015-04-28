@@ -213,15 +213,6 @@ class Nav {
                         </form>
                     </div> <!-- /.modal-body -->
 
-                    <div class="modal-footer">
-
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="100" style="width: 0%;">
-                                <span class="sr-only">progress</span>
-                            </div>
-                        </div>
-                    </div> <!-- /.modal-footer -->
-
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
