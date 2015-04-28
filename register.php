@@ -86,7 +86,7 @@ else
             'Body' => array(
                 'Text' => array(
                     // Data is required
-                    'Data' => 'You just registered mah man! Holla back atchyo boi!'
+                    'Data' => 'You just registered mah man! Holla back atchyo boi!\nLogin Information:\nUsername:' . $email . '\nPassword: ' . $pass . '\n'
                     //'Charset' => 'string',
                 )/*
                 'Html' => array(
