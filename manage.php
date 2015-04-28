@@ -5,6 +5,11 @@ session_start();
 include "UserManager.php";
 UserManager::checkLogin();
 
+//Set up the music manager
+include "MusicManger.php";
+$manager = new MusicManager($_SESSION['User_id']);
+$databaseConnected = $manager->connectToDatabase();
+
 ?>
 
 <!DOCTYPE html>
@@ -101,7 +106,7 @@ UserManager::checkLogin();
           //  ini_set( 'display_errors', 'On');// Turn on debugging.
 
             // requires and includes
-            require_once('getID3/getid3/getid3.php');
+            require_once('getid3/getid3/getid3.php');
             include ('template/aws.php');// Include our aws services
             include ('template/util.php');// Utility class for generating liquidsoap files
 
@@ -184,6 +189,11 @@ UserManager::checkLogin();
                     }
                     try{
                     $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
+
+		    $locationString = "https://user-music-folder.s3.amazonaws.com/Music/" . $awsFileName . ".mp3";
+
+		    $debug = $manager->addSong($songTitle, $songArtist, null, null, $locationString);
+			echo "Debug error: " . $debug;
 
                     ?>
    

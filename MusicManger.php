@@ -45,45 +45,47 @@ class MusicManager
 			$genre="%";
 		
 		//Bind the query parameters to the statement.
-		$searchQuery = $database->prepare($queryString);
+		$searchQuery = $this->database->prepare($queryString);
 		$searchQuery->bind_param("sssss", $this->user_id, $title, $artist, $album, $genre);
 
 		//If query is successful, return the result. 
 		//Otherwise, return false.
-		if(searchQuery->execute())
+		if($searchQuery->execute())
 			return $searchQuery->get_result();
 		else
-			return FALSE:
+			return FALSE;
 	}
 
 	public function addSong($title, $artist, $album, $genre, $location)
 	{
 		//Title and location cannot be null
-		if(empty($title) || empty($location))
-			return FALSE;
+		if(empty($title))
+			return "No title";
+		if(empty($location))
+			return "No location";
 
 		//Prepare the query and execute it.		
-		$insertQuery = $database->prepare("INSERT INTO song (title, artist, album, genre, location) VALUES (?, ?, ?, ?, ?)");
+		$insertQuery = $this->database->prepare("INSERT INTO song (title, artist, album, genre, location) VALUES (?, ?, ?, ?, ?)");
 		$insertQuery->bind_param("sssss", $title, $artist, $album, $genre, $location);
 		$result = $insertQuery->execute();
 
 		//If query failed, return false.
 		if($result === FALSE)	
-			return FALSE;
+			return "Insert into song failed:\n" . $insertQuery->error;
 
 
 		//If insert was successful, insert into owns table.
 
 		//First must get song_id of the song we just inserted.
 		//We do this by selecting row with same location.
-		$searchQuery = $database->prepare("SELECT song_id FROM song WHERE location = ?");
+		$searchQuery = $this->database->prepare("SELECT song_id FROM song WHERE location = ?");
 		$searchQuery->bind_param("s", $location);
 		$searchQuery->execute();
 
 		$result = $searchQuery->get_result();
 
 		if($result === FALSE)
-			return FALSE;
+			return "Select song_id failed";
 		else
 		{
 			$row = $result->fetch_assoc();
@@ -91,15 +93,16 @@ class MusicManager
 		}
 
 		//We can now construct the owns relation with this song_id
-		$ownsQuery = $database->prepare("INSERT INTO owns (user_id, song_id) VALUES (?, ?)");
+		$ownsQuery = $this->database->prepare("INSERT INTO owns (user_id, song_id) VALUES (?, ?)");
 		$ownsQuery->bind_param("ii", $this->user_id, $song_id);
 
 		$result = $ownsQuery->execute();
 
 		//If this fails, should we rollback? Idk about that atm.		
 		if($result===FALSE)
-			return FALSE;
-
+			return "Insert into owns failed";
+		else
+			return "Result works";
 		//If database has been updated, upload song to S3.
 		//TODO: Add S3 code here.
 	}
