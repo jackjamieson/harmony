@@ -143,7 +143,9 @@ if(isset($_POST['newPass']))
 			  </tbody>
 		      </table>
 
-              <input type="submit" value="Update Account" class="btn btn-primary btn-primary"/>
+            <button type="submit" class="btn btn-primary">
+              <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Update Account
+            </button>
 
         	</form>
 
