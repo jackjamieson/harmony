@@ -55,7 +55,7 @@ class Nav {
         //login 
         echo
             '
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
 
@@ -125,7 +125,7 @@ class Nav {
                </ul>
                <ul class="nav navbar-nav navbar-right">
 
-                 <li><a href="#" data-toggle="modal" data-target="#myModal">Sign In</a></li>
+                 <li><a href="#" data-toggle="modal" data-target="#myModal1">Sign In</a></li>
                  <li><a href="#" data-toggle="modal" data-target="#register">Register</a></li>
 
                </ul>
@@ -137,7 +137,7 @@ class Nav {
         //login 
         echo
             '
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
 
