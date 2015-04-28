@@ -143,6 +143,11 @@ UserManager::checkLogin();
                 
                 if(strlen($songArtist) < 1 || strlen($songTitle) < 1){
                     
+                    // set the titles to unknown so they aren't null in the database
+                    $timestamp = time();
+                    $songArtist = "Unknown Artist - " . $timestamp;
+                    $songTitle = "Unknown Title - " . $timestamp;
+
                                         ?>
                  <script>
 
