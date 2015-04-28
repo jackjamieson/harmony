@@ -31,7 +31,7 @@ $(document).ready(function(){
 		}
 	});
 
-	$('#myModal').on('hidden.bs.modal', function (e) {
+	$('#register').on('hidden.bs.modal', function (e) {
 		var inputs = $('form input');
 		var title = $('.modal-title');
 		var progressBar = $('.progress-bar');
