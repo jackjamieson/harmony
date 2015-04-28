@@ -141,13 +141,6 @@ else
     }
 	echo "Email sent\n";
 
-	
-	$manager->logIn($user, $pass);
-	die();
-}
-
-?>
-
 	$manager->logIn($user, $pass);
 	die();
 }
