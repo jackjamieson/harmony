@@ -95,7 +95,7 @@ else
     'profile' => 'default',
     'region'  => 'us-west-2',
     ));*/
-	echo "Ses Client created.\n";
+	//echo "Ses Client created.\n";
 	/*
     Loops for each email address the user entered
     need to replace the email text data with an official link
@@ -139,7 +139,7 @@ else
         'ReturnPath' => 'string',*/
     	));
     
-	echo "Email sent\n";
+	//echo "Email sent\n";
 
 	$manager->logIn($user, $pass);
 	die();
