@@ -37,6 +37,8 @@ if($manager->registerNewUser($user, $pass, $email) === FALSE)
 //Success
 else
 {	
+	//Send confirmation email to new user
+	
 	$manager->logIn($user, $pass);
 	die();
 }
