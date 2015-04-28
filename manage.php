@@ -75,7 +75,21 @@ $databaseConnected = $manager->connectToDatabase();
             You can edit and delete the songs you have previously uploaded here.
               <p></p>
               <div class="list-group" style="max-height:300px; overflow:auto;">
-              <a href="#" class="list-group-item">Artist1 - Title</a>
+              
+		<?php
+		$result = $manager->searchSongs(null, null);
+		if($result === FALSE)
+		echo 'Error';
+		else
+		echo 'No Error. Num Rows: ' . $result->num_rows;
+
+		while($row = $result->fetch_assoc())
+		{
+		echo '<a href="#" class="list-group-item">'. $row['artist'] . '-' . $row['title'] . '</a>';
+		}
+		?>
+<!--
+	      <a href="#" class="list-group-item">Artist1 - Title</a>
               <a href="#" class="list-group-item">Artist2 - Title</a>
               <a href="#" class="list-group-item">Artist3 - Title</a>
               <a href="#" class="list-group-item">Artist4 - Title</a>
@@ -83,6 +97,7 @@ $databaseConnected = $manager->connectToDatabase();
               <a href="#" class="list-group-item">Artist2 - Title</a>
               <a href="#" class="list-group-item">Artist3 - Title</a>
               <a href="#" class="list-group-item">Artist4 - Title</a>
+-->
             </div>
               <a href="#" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
               <a href="#" class="btn btn-primary btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>

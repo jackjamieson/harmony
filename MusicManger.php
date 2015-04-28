@@ -30,23 +30,24 @@ class MusicManager
 
 	//Search for songs with input params stored in the user's collection.
 	//If query successful, returns the query result. Else returns false.
-	public function searchSongs($title, $artist, $album, $genre)
+	public function searchSongs($title, $artist)
 	{
-		$queryString = "SELECT song.* FROM song INNER JOIN owns ON song.song_id = owns.song_id WHERE owns.user_id=? AND song.title LIKE ? AND song.artist LIKE ? AND song.album LIKE ? AND song.genre LIKE ?";
+		$queryString = "SELECT song.* FROM song INNER JOIN owns ON song.song_id = owns.song_id WHERE owns.user_id=? AND song.title LIKE ? AND song.artist LIKE ?";
+// AND song.album LIKE ? AND song.genre LIKE ?";
 
 		//If a parameter is empty, do not use it to narrow search results.
 		if(empty($title))
 			$title = "%";
 		if(empty($artist))
 			$artist="%";
-		if(empty($album))
-			$album="%";
-		if(empty($genre))
-			$genre="%";
+//		if(empty($album))
+//			$album="%";
+//		if(empty($genre))
+//			$genre="%";
 		
 		//Bind the query parameters to the statement.
 		$searchQuery = $this->database->prepare($queryString);
-		$searchQuery->bind_param("sssss", $this->user_id, $title, $artist, $album, $genre);
+		$searchQuery->bind_param("sss", $this->user_id, $title, $artist);
 
 		//If query is successful, return the result. 
 		//Otherwise, return false.
