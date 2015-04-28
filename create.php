@@ -1,12 +1,7 @@
 <?php
-include "base.php"; //Handles session start and database interaction.
-
-//If LoggedIn not set, return to home screen.
-if(empty($_SESSION['LoggedIn']))
-{
-	header('Location: index.php');
-	die();
-}
+session_start();
+include "UserManager.php";
+UserManager::checkLogin();
 
 ?>
 
