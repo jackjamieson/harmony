@@ -2,20 +2,29 @@
 <body>
 <p>Sending email...</p>
 <?php
-	include 'vendor/autoload.php';
 
 	/**********************************************************
 	 *  TEST AWS SES CAPABILITIES
 	 *********************************************************/
 	// Instantiates the ses client with AWS credentials
+    include("template/aws.php");
+    error_reporting(E_ALL);
 
-	use Aws\Ses\SesClient;
 
-	$client = SesClient::factory(array(
-		'key' => '',
-		'secret' => '',
-		'region' => 'us-west-2'
-	));
+    ini_set( 'display_errors', 'On');// Turn on debugging.
+
+    $aws = new AWS();
+    $SESClient = $aws->authSES();// Authorize the S3 object.
+
+    //echo $SESClient;
+    //$aws = Aws::factory('config.php');
+    //$sesClient = $aws->get('ses');
+    /*
+    $client = SesClient::factory(array(
+    'profile' => 'default',
+    'region'  => 'us-west-2',
+    ));*/
+
 
 	echo "Ses Client created.\n";
 
@@ -28,7 +37,7 @@
     for($i=0;$i<count($_POST["emailAddress"]);$i++)
     {
         //$toAddress = $_POST["emailAddress"][$i]
-    	$result = $client->sendEmail(array(
+    	$result = $SESClient->sendEmail(array(
         // Source is required
         'Source' => 'harmony.mailservice@gmail.com',
         // Destination is required
@@ -49,7 +58,7 @@
             'Body' => array(
                 'Text' => array(
                     // Data is required
-                    'Data' => 'hows my stream? holla back atchyo boi'
+                    'Data' => 'hows my stream? holla back atchyo boi (your friend wants you to join in at ' . $_POST["url"] . ')'
                     //'Charset' => 'string',
                 )/*
                 'Html' => array(
