@@ -128,7 +128,7 @@ $databaseConnected = $manager->connectToDatabase();
 						$locationString = "https://user-music-folder.s3.amazonaws.com/Music/" . $awsFileName . ".mp3";
 
 						$debug = $manager->addSong($songTitle, $songArtist, null, null, $locationString);
-						echo "Debug error: " . $debug;
+						//echo "Debug error: " . $debug;
 
                         $util = new Util();
 
