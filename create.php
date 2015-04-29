@@ -103,7 +103,7 @@ UserManager::checkLogin();
 						$timestamp = time();
 						$songArtist = "Unknown Artist - " . $timestamp;
 						$songTitle = "Unknown Title - " . $timestamp;
-
+						}
 					
                     if(preg_match("/\.(mp3)$/", $fileName)){
 
