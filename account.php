@@ -144,7 +144,7 @@ if(isset($_POST['newPass']))
 		      </table>
 
             <button type="submit" class="btn btn-primary">
-              <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Update Account
+              <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Update Account
             </button>
 
         	</form>

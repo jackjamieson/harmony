@@ -78,18 +78,102 @@ $databaseConnected = $manager->connectToDatabase();
               
 		<?php
 		$result = $manager->searchSongs(null, null);
-		
+		//song_id
 		while($row = $result->fetch_assoc())
 		{
-		echo '<a href="#" class="list-group-item">'. $row['artist'] . ' - ' . $row['title'] . '</a>';
+            $the_id = $row['song_id'];
+		echo '<a href="javascript:;" id="' . $the_id . '" class="list-group-item"><b>'. $row['artist'] . '</b> - ' . $row['title'] . '</a>';
 		}
 		?>
+                  <script>
+                      var s_id = 0;
+                      // this tiny script handles getting the id from the table
+                  $(".list-group-item").click(function(){
+                      //console.log(this.id);
+                      // s_id = this.id;
+                      // console.log(s_id);
+                      $('#edit').attr('data-target','#e');
+                      $('#delete').attr('data-target','#d');
+
+
+                    });
+                  </script>
 
             </div>
-              <a href="#" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
-              <a href="#" class="btn btn-primary btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+            <a href="manage.php" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-refresh"></span> Update Collection</a>
+              <a href="#" id="edit" data-toggle="modal" data-target="#" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+              <a href="#" id="delete" data-toggle="modal" data-target="#" class="btn btn-primary btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
           </div>
         </div>
+            
+            <!-- edit modal !-->
+            <div class="modal fade" id="e">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit Song</h4>
+                  </div>
+                  <div class="modal-body" id="cont">
+                    <script>
+                         $(".list-group-item").click(function(){
+                            console.log(this.id)
+                         });
+                        </script>
+                        
+                        <form action="" method="post">
+                         <!-- Table -->
+                      <table class="table" style="width:100%">
+                    <tbody>
+                        <tr>
+                            <td><b>Artist: </b><input type="text" class="form-control" value="Song Artist" aria-describedby="basic-addon1"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Title:</b><input type="text" class="form-control" value="Song Title" aria-describedby="basic-addon1">
+                            </td>
+                        </tr>
+                        
+                          </tbody>
+                            </table>
+                      </form>
+                      
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        
+            <!-- delete modal !-->
+            <div class="modal fade" id="d">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Delete Song</h4>
+                  </div>
+                  <div class="modal-body" id="cont">
+                    <p><script>
+                         $(".list-group-item").click(function(){
+                            console.log(this.id)
+                         });
+                        </script>
+                        
+                        <form action="" method="post">
+                         <!-- Table -->
+                      Are you sure you want to delete "Artist - Song Title"?
+                      </form>
+                      </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger">Delete</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
 
 
         <div id="loading" style="display:none;"><center><b>Uploading...</b><br><img src="img/loader.gif"/></center><br></div>
