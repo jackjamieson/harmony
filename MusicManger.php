@@ -94,8 +94,8 @@ class MusicManager
 		}
 
 		//We can now construct the owns relation with this song_id
-		$ownsQuery = $this->database->prepare("INSERT INTO owns (user_id, song_id) VALUES (?, ?)");
-		$ownsQuery->bind_param("ii", $this->user_id, $song_id);
+		$ownsQuery = $this->database->prepare("INSERT INTO owns (user_id, song_id, title, artist) VALUES (?, ?, ?, ?)");
+		$ownsQuery->bind_param("iiss", $this->user_id, $song_id, $title, $artist);
 
 		$result = $ownsQuery->execute();
 
@@ -104,8 +104,6 @@ class MusicManager
 			return "Insert into owns failed";
 		else
 			return "Result works";
-		//If database has been updated, upload song to S3.
-		//TODO: Add S3 code here.
 	}
 
 	public function deleteSong($song_id)
@@ -143,20 +141,12 @@ class MusicManager
 		//TODO: REMOVE SONG FROM S3 HERE.
 	}
 
-	// Takes in the location of a song and returns a String with the title and artist. Return FALSE if errors.
-	public function getSongString($location)
+	public function editSong($song_id, $newTitle, $newArtist)
 	{
-		$query = $this->database->prepare("SELECT title, artist FROM song WHERE location=?");
-		$query->bind_param("s", $location);
-
-		if($query->execute() === FALSE)
-			return FALSE;
-		
-		$result = $query->get_result();
-		//TODO: Finish up here.
-		
-
+		//
+		$selectQuery = $this->database->prepare("SELECT" );
 	}
+
 
 	public function likeSong()
 	{
