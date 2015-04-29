@@ -62,7 +62,7 @@ $databaseConnected = $manager->connectToDatabase();
                 $nav->render();
             ?>
 
-            <div class="alert alert-success alert-dismissible" role="alert" id="upload_status" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Song Uploaded!</div>
+            <!--<div class="alert alert-success alert-dismissible" role="alert" id="upload_status" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Song Uploaded!</div>!-->
             <span id="headerAlert"></span>
             <div class="alert alert-warning alert-dismissible" role="alert" id="upload_fail" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Upload failed.</div>
 
@@ -152,10 +152,42 @@ $databaseConnected = $manager->connectToDatabase();
                     
                     // set the titles to unknown so they aren't null in the database
                     $timestamp = time();
-                    $songArtist = "Unknown Artist - " . $timestamp;
-                    $songTitle = "Unknown Title - " . $timestamp;
+                    $songArtist = "Unknown Artist " . $timestamp;
+                    $songTitle = "Unknown Title " . $timestamp;
 
-                                        ?>
+                }
+
+              
+                
+
+                if(preg_match("/\.(mp3)$/", $fileName)){
+
+                    $awsFileName = time();
+
+
+                    if($_FILES['theFile']['error'] > 0){
+                        echo "return code: " . $_FILES['theFile']['error'];
+
+                        if($_FILES['theFile']['error'] == 4){
+                            echo ' No file was uploaded.  Is it a music file?';
+                        }
+                    }
+                    try{
+                    $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
+
+		    $locationString = "https://user-music-folder.s3.amazonaws.com/Music/" . $awsFileName . ".mp3";
+
+		    $debug = $manager->addSong($songTitle, $songArtist, null, null, $locationString);
+              
+             if(strlen($songArtist) < 1 || strlen($songTitle) < 1){
+                    
+                    // set the titles to unknown so they aren't null in the database
+                    $timestamp = time();
+                    $songArtist = "Unknown Artist " . $timestamp;
+                    $songTitle = "Unknown Title " . $timestamp;
+
+                         ?>
+              
                  <script>
 
                   $('#headerAlert').html('<div class="alert alert-success alert-dismissible" role="alert" id="upload_status2" style="display:block;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Song uploaded!<br>We couldn\'t figure out the song title and artist for this song, you might want to edit it below.</div>');
@@ -176,26 +208,7 @@ $databaseConnected = $manager->connectToDatabase();
                   </script>
               <?php
                 }
-
-                if(preg_match("/\.(mp3)$/", $fileName)){
-
-                    $awsFileName = time();
-
-
-                    if($_FILES['theFile']['error'] > 0){
-                        echo "return code: " . $_FILES['theFile']['error'];
-
-                        if($_FILES['theFile']['error'] == 4){
-                            echo ' No file was uploaded.  Is it a music file?';
-                        }
-                    }
-                    try{
-                    $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
-
-		    $locationString = "https://user-music-folder.s3.amazonaws.com/Music/" . $awsFileName . ".mp3";
-
-		    $debug = $manager->addSong($songTitle, $songArtist, null, null, $locationString);
-			echo "Debug error: " . $debug;
+			
 
        
                   }
@@ -287,8 +300,42 @@ $databaseConnected = $manager->connectToDatabase();
                     
                     // set the titles to unknown so they aren't null in the database
                     $timestamp = time();
-                    $songArtist = "Unknown Artist - " . $timestamp;
-                    $songTitle = "Unknown Title - " . $timestamp;
+                    $songArtist = "Unknown Artist " . $timestamp;
+                    $songTitle = "Unknown Title " . $timestamp;
+					
+					?>
+   
+              <?php
+                    // WHEN YOU UPLOAD THIS TO THE DATABASE CALL IT UNKNOWN OR THE DATE MAYBE?
+                }
+                else {
+                    
+                    ?>
+              <?php
+                }
+                    
+				
+                if(!preg_match("/\.(mp3)$/", $fileName)){
+
+                    $awsFileName = time();
+
+
+                    try{
+                      $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
+
+					   $locationString = "https://user-music-folder.s3.amazonaws.com/Music/" . $awsFileName . ".mp3";
+
+		    $debug = $manager->addSong($songTitle, $songArtist, null, null, $locationString);
+			
+					  
+                        if(strlen($songArtist) < 1 || strlen($songTitle) < 1){
+                            
+                            $songArtist = "Unknown Artist " . $timestamp;
+                            $songTitle = "Unknown Title " . $timestamp;
+                    
+                    // set the titles to unknown so they aren't null in the database
+                    $timestamp = time();
+
 					
 					?>
                  <script>
@@ -311,20 +358,7 @@ $databaseConnected = $manager->connectToDatabase();
                   </script>
               <?php
                 }
-				
-                if(!preg_match("/\.(mp3)$/", $fileName)){
-
-                    $awsFileName = time();
-
-
-                    try{
-                      $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
-
-					   $locationString = "https://user-music-folder.s3.amazonaws.com/Music/" . $awsFileName . ".mp3";
-
-		    $debug = $manager->addSong($songTitle, $songArtist, null, null, $locationString);
-			echo "Debug error: " . $debug;
-					  
+                        
                       echo '<script>upload_completed();</script>';
                     }
                     catch(Exception $e2)
