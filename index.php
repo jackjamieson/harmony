@@ -30,14 +30,41 @@ else
 
             <!-- css/html nav !-->
             <?php include ('template/nav.php') ?>
-
+			
             <?php
                 // Find out whether or not the user is logged in and pass it into Nav
                 $nav = new Nav($loggedIn);
                 $nav->render();
             ?>
 
+			<div class="alert alert-warning alert-dismissible" role="alert" id="login_fail" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Login failed.</div>
+			<div class="alert alert-warning alert-dismissible" role="alert" id="login_null" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>You must must be logged in to perform that action.</div>
+				
 
+			<?php
+				// if the url has an id query then use that to print appropriate banner
+				if(isset($_GET["id"])){
+					$code = $_GET["id"];
+					
+					if ($code === "fail") {
+						?>
+						<script>
+							document.getElementById("login_fail").style.display="block";
+						</script>
+						<?php
+					}
+					if ($code === "null") {
+						?>
+						<script>
+							document.getElementById("login_null").style.display="block";
+						</script>
+						<?php
+					}
+					else {
+						
+					}
+				}
+			?>
 
             <div class="jumbotron">
                 <h1>Listen to music.  Together.</h1>

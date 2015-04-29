@@ -161,12 +161,16 @@ class UserManager {
 		//If values are empty, return false.
 		if(empty($user) && empty($pass))
 		{
+			header('Location: index.php?id=fail');
+			die();
 			return FALSE;
 		}
 
 		//Make sure username is valid
 		if($this->usernameAvailable($user) === TRUE)
 		{
+			header('Location: index.php?id=fail');
+			die();
 			return FALSE;
 		}
 	
@@ -195,7 +199,7 @@ class UserManager {
 		{
 
 			//echo 'PROBLEM';
-			header('Location: index.php');
+			header('Location: index.php?id=fail');
 			die();
 		}
 
@@ -213,7 +217,7 @@ class UserManager {
 			//If not at home page and not logging in, redirect.
 			if($currentPage != 'index.php' && $currentPage != 'login.php')
 			{
-				header('Location: index.php');
+				header('Location: index.php?id=null');
 				die();
 			}
 		}
