@@ -82,7 +82,10 @@ $databaseConnected = $manager->connectToDatabase();
 		while($row = $result->fetch_assoc())
 		{
             $the_id = $row['song_id'];
-		echo '<a href="javascript:;" id="' . $the_id . '" class="list-group-item"><b>'. $row['artist'] . '</b> - ' . $row['title'] . '</a>';
+            $art = $row['artist'];
+            $tit = $row['title'];
+            
+		echo '<a href="javascript:;" id="' . $the_id . '" title="' . $art . ' - ' . $tit . '" class="list-group-item"><b>'. $row['artist'] . '</b> - ' . $row['title'] . '</a>';
 		}
 		?>
                   <script>
@@ -117,7 +120,18 @@ $databaseConnected = $manager->connectToDatabase();
                   <div class="modal-body" id="cont">
                     <script>
                          $(".list-group-item").click(function(){
-                            console.log(this.id)
+                            //console.log(this.title)
+                             var titsplit = "";
+                             var artsplit = "";
+                             artsplit = this.title.substring(0, this.title.indexOf(" - "));
+                             titsplit = this.title.substring(this.title.indexOf(" - ")+3, this.title.length);
+
+                             
+                             $("#sedit").val(artsplit);
+                            $("#tedit").val(titsplit);
+                             $("#idedit").val(this.id);
+
+                             
                          });
                         </script>
                         
@@ -126,15 +140,17 @@ $databaseConnected = $manager->connectToDatabase();
                       <table class="table" style="width:100%">
                     <tbody>
                         <tr>
-                            <td><b>Artist: </b><input type="text" class="form-control" value="Song Artist" aria-describedby="basic-addon1"></td>
+                            <td><b>Artist: </b><input type="text" class="form-control" id="sedit" value="Song Artist" aria-describedby="basic-addon1"></td>
                         </tr>
                         <tr>
-                            <td><b>Title:</b><input type="text" class="form-control" value="Song Title" aria-describedby="basic-addon1">
+                            <td><b>Title:</b><input type="text" class="form-control" id="tedit" value="Song Title" aria-describedby="basic-addon1">
                             </td>
                         </tr>
                         
                           </tbody>
                             </table>
+                            <!-- hidden id !-->
+                            <input type="text" style="display:none;" class="form-control" id="idedit" aria-describedby="basic-addon1">
                       </form>
                       
                   </div>
@@ -157,7 +173,7 @@ $databaseConnected = $manager->connectToDatabase();
                   <div class="modal-body" id="cont">
                     <p><script>
                          $(".list-group-item").click(function(){
-                            console.log(this.id)
+                            //console.log(this.id)
                          });
                         </script>
                         
