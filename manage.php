@@ -197,10 +197,7 @@ $databaseConnected = $manager->connectToDatabase();
 		    $debug = $manager->addSong($songTitle, $songArtist, null, null, $locationString);
 			echo "Debug error: " . $debug;
 
-                    ?>
-   
-                
-                <?php
+       
                   }
                   catch(Exception $e){
                     echo '<script>upload_fail();</script>';
@@ -262,14 +259,59 @@ $databaseConnected = $manager->connectToDatabase();
 
             //check whether a form was submitted
             if(isset($_POST['Transcode'])){
-
+				
+				// id3 information
+                // Initialize getID3 engine
+                $getID3 = new getID3;
 
                 $id = uniqid();// generate unique id for the room
 
                 //retreive post variables
                 $fileName = $_FILES['theFile']['name'];
                 $fileTempName = $_FILES['theFile']['tmp_name'];
+				
+				// Analyze file and store returned data in $ThisFileInfo
+                $songid3info = $getID3->analyze($fileTempName);
+                getid3_lib::CopyTagsToComments($songid3info);
+                
+                $songArtist = "";
+                $songTitle = "";
+                
+                // extract the artist and title info
+                if(isset($songid3info['comments_html']['artist'][0]))
+                    $songArtist = $songid3info['comments_html']['artist'][0]; // artist from any/all available tag formats
+                if(isset($songid3info['tags']['id3v2']['title'][0]))
+                    $songTitle = $songid3info['tags']['id3v2']['title'][0];  // title from ID3v2
+                
+                if(strlen($songArtist) < 1 || strlen($songTitle) < 1){
+                    
+                    // set the titles to unknown so they aren't null in the database
+                    $timestamp = time();
+                    $songArtist = "Unknown Artist - " . $timestamp;
+                    $songTitle = "Unknown Title - " . $timestamp;
+					
+					?>
+                 <script>
 
+                  $('#headerAlert').html('<div class="alert alert-success alert-dismissible" role="alert" id="upload_status2" style="display:block;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Song uploaded!<br>We couldn\'t figure out the song title and artist for this song, you might want to edit it below.</div>');
+
+
+                  </script>
+              <?php
+                    // WHEN YOU UPLOAD THIS TO THE DATABASE CALL IT UNKNOWN OR THE DATE MAYBE?
+                }
+                else {
+                    
+                    ?>
+                 <script>
+
+                  $('#headerAlert').html('<div class="alert alert-success alert-dismissible" role="alert" id="upload_status2" style="display:block;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Song uploaded!<br>We think the song is <b><?php echo $songTitle . "</b> by <b>" . $songArtist; ?></b>. If that doesn\'t look right you can edit it below.</div>');
+
+
+                  </script>
+              <?php
+                }
+				
                 if(!preg_match("/\.(mp3)$/", $fileName)){
 
                     $awsFileName = time();
@@ -278,6 +320,11 @@ $databaseConnected = $manager->connectToDatabase();
                     try{
                       $result = $aws->uploadSong($s3Client, $fileTempName, $awsFileName);// Upload the file to AWS
 
+					   $locationString = "https://user-music-folder.s3.amazonaws.com/Music/" . $awsFileName . ".mp3";
+
+		    $debug = $manager->addSong($songTitle, $songArtist, null, null, $locationString);
+			echo "Debug error: " . $debug;
+					  
                       echo '<script>upload_completed();</script>';
                     }
                     catch(Exception $e2)
