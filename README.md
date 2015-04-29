@@ -29,4 +29,8 @@ Collaborative playlist creation.
 ###Flow of data:
 Client => Linode => Liquidsoap/Upload to S3 => (EC2 Icecast <=> AWS) => Client
 
-
+###Things to remember:
+- Need to change PHP max upload sizes to fit songs ( > 10mb maybe? )
+- Permissions for writing .liq files ( needs write access )
+- Requires Composer to install AWS packages, or do it by hand
+- 
