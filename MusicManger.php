@@ -32,22 +32,17 @@ class MusicManager
 	//If query successful, returns the query result. Else returns false.
 	public function searchSongs($title, $artist)
 	{
-		$queryString = "SELECT song.* FROM song INNER JOIN owns ON song.song_id = owns.song_id WHERE owns.user_id=? AND song.title LIKE ? AND song.artist LIKE ?";
-// AND song.album LIKE ? AND song.genre LIKE ?";
+		$queryString = "SELECT song_id, title, artist FROM owns WHERE user_id=? AND title LIKE ? AND artist LIKE ?";
 
 		//If a parameter is empty, do not use it to narrow search results.
 		if(empty($title))
 			$title = "%";
 		if(empty($artist))
 			$artist="%";
-//		if(empty($album))
-//			$album="%";
-//		if(empty($genre))
-//			$genre="%";
 		
 		//Bind the query parameters to the statement.
 		$searchQuery = $this->database->prepare($queryString);
-		$searchQuery->bind_param("sss", $this->user_id, $title, $artist);
+		$searchQuery->bind_param("iss", $this->user_id, $title, $artist);
 
 		//If query is successful, return the result. 
 		//Otherwise, return false.
@@ -132,25 +127,60 @@ class MusicManager
 		
 		//If count is 0, that means nobody has song in collection.
 		//We should therefore delete it from S3 and remove from DB.
-		$deleteSongQuery = $database->prepare("DELETE FROM song WHERE song_id = ?");
+		$deleteSongQuery = $this->database->prepare("DELETE FROM song WHERE song_id = ?");
 		$deleteSongQuery->bind_param("i", $song_id);
 		
-		if($deleteSongQuery->execute() === FALSE)
+		return $deleteSongQuery->execute();
+	}
+
+	//Selects the title and artist of a user's song.
+	//Returns an array with columns ['title'] and ['artist'] on success.
+	//Returns FALSE on failure.
+	public function getSongInfo($song_id)
+	{
+		$searchQuery = $this->database->prepare("SELECT title, artist FROM owns WHERE user_id = ? AND song_id = ?");
+		$searchQuery->bind_param("ii", $this->user_id, $song_id);
+		
+		//If query fails, return false.
+		if($searchQuery->execute() === FALSE)
 			return FALSE;
 		
-		//TODO: REMOVE SONG FROM S3 HERE.
+		//Otherwise, return an array with the title and artist.
+		return $searchQuery->get_result()->fetch_assoc();
 	}
 
+	//Edits the title and/or artist of a song in the user's collection.
+	//Returns FALSE if error with either query.
+	//Returns TRUE otherwise.
 	public function editSong($song_id, $newTitle, $newArtist)
-	{
-		//
-		$selectQuery = $this->database->prepare("SELECT" );
+	{	
+		//Update title if not null.
+		if(!empty($newTitle))
+		{
+			$titleQuery = $this->database->prepare("UPDATE owns SET title = ? WHERE user_id = ? AND song_id = ?" );
+			$titleQuery->bind_param("sii", $newTitle, $this->user_id, $song_id);
+			if($titleQuery->execute() === FALSE)
+				return FALSE;
+		}
+
+		if(!empty($newArtist))
+		{
+			$artistQuery = $this->database->prepare("UPDATE own SET artist = ? WHERE user_id = ? AND song_id = ?");
+			$artistQuery->bind_param("sii", $newArtist, $this->user_id, $song_id);
+			if($artistQuery->execute() === FALSE)
+				return FALSE;
+		}
+
+		return TRUE;
 	}
 
-
-	public function likeSong()
+	//Increments the rating of a song by one.
+	public function likeSong($song_id)
 	{
-		//TODO: Need to implement.
+		$likeQuery = $this->database->prepare("UPDATE song SET rating = rating + 1 WHERE song_id = ?");
+		$likeQuery->bind_param("i", $song_id);
+		
+		return $likeQuery->execute();
 	}
 
 }
