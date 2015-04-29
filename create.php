@@ -107,8 +107,8 @@ $databaseConnected = $manager->connectToDatabase();
 						
 						// set the titles to unknown so they aren't null in the database
 						$timestamp = time();
-						$songArtist = "Unknown Artist - " . $timestamp;
-						$songTitle = "Unknown Title - " . $timestamp;
+						$songArtist = "Unknown Artist " . $timestamp;
+						$songTitle = "Unknown Title " . $timestamp;
 						}
 					
                     if(preg_match("/\.(mp3)$/", $fileName)){
