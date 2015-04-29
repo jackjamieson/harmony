@@ -3,6 +3,12 @@ session_start();
 include "UserManager.php";
 UserManager::checkLogin();
 
+//Set up the music manager
+include "MusicManger.php";
+$manager = new MusicManager($_SESSION['User_id']);
+$databaseConnected = $manager->connectToDatabase();
+
+
 ?>
 
 <!DOCTYPE html>
