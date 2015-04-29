@@ -62,7 +62,7 @@ class MusicManager
 
 		//Prepare the query and execute it.		
 		$insertQuery = $this->database->prepare("INSERT INTO song (title, artist, album, genre, location) VALUES (?, ?, ?, ?, ?)");
-		$insertQuery->bind_param("sss", $title, $artist, $album, $genre, $location);
+		$insertQuery->bind_param("sssss", $title, $artist, $album, $genre, $location);
 		$result = $insertQuery->execute();
 
 		//If query failed, return false.
