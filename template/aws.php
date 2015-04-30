@@ -78,7 +78,15 @@ class AWS {
         return $result;
 
     }
-    
+   
+	public function deleteSong($s3Client, $awsFileName)
+	{
+		$result = $s3Client->deleteObject(array(
+			'Bucket' => $this->bucketName,
+			'Key' => $awsFileName
+		));
+	}
+ 
     public function sendEmail($SESclient, $toAddr){
         
         

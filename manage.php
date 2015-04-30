@@ -211,18 +211,19 @@ $databaseConnected = $manager->connectToDatabase();
                              
                          });
                         </script>
-                        <input type="text" style="display:none;" class="form-control" id="iddelete" aria-describedby="basic-addon1">
+                    <form action="deleteSong.php" method="post">
+                        <input type="text" name="DeleteId" style="display:none;" class="form-control" id="iddelete" aria-describedby="basic-addon1">
 
-                        <form action="" method="post">
                          <!-- Table -->
                       <div id="deleteString">Are you sure you want to delete "Artist - Song Title"?</div>
-                      </form>
+                      
                       </p>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
                   </div>
+		</form>
                 </div><!-- /.modal-content -->
               </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
