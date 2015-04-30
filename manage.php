@@ -49,6 +49,11 @@ $databaseConnected = $manager->connectToDatabase();
               document.getElementById("upload_fail").style.display="block";
 
             }
+            
+            function edit_success(){
+              document.getElementById("edit_success").style.display="block";
+
+            }
         </script>
             <a name="top"></a>
 
@@ -65,6 +70,25 @@ $databaseConnected = $manager->connectToDatabase();
             <!--<div class="alert alert-success alert-dismissible" role="alert" id="upload_status" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Song Uploaded!</div>!-->
             <span id="headerAlert"></span>
             <div class="alert alert-warning alert-dismissible" role="alert" id="upload_fail" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Upload failed.</div>
+             <div class="alert alert-success alert-dismissible" role="alert" id="edit_success" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Song edited.</div>
+
+            <?php
+            // get the edited tags if they present
+
+            if(isset($_GET['edited'])){
+                
+                $value = $_GET['edited'];
+                
+                if($value == '1'){
+                    ?>
+                    <script>
+                    edit_success();
+                    </script>
+                <?php
+                }
+                
+            }
+            ?>
 
 
          <div class="panel panel-default">
