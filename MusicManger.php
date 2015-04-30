@@ -101,20 +101,25 @@ class MusicManager
 			return "Result works";
 	}
 
+	//Returns 0 on failed deletion.
+	//Returns 1 on successful deletion from User's collection.
+	//Returns 2 on success and signifies need to remove song from S3.
 	public function deleteSong($song_id)
 	{
 
 		//First, remove song from user's collection.
-		$deleteOwnsQuery = $database->prepare("DELETE FROM owns WHERE user_id = ? AND song_id = ?");
+		$deleteOwnsQuery = $this->database->prepare("DELETE FROM owns WHERE user_id = ? AND song_id = ?");
 		$deleteOwnsQuery->bind_param("ii", $this->user_id, $song_id);
 		
 		if($deleteOwnsQuery->execute() === FALSE)
-			return FALSE;
+			return 0;
 
 		//Next, check if anyone else owns the song in their collection.
-		$selectQuery = $database->prepare("SELECT COUNT(*) AS count FROM owns WHERE song_id = ?");
+		$selectQuery = $this->database->prepare("SELECT COUNT(*) AS count FROM owns WHERE song_id = ?");
 		$selectQuery->bind_param("i", $song_id);
-		$selectQuery->execute();
+		
+		if($selectQuery->execute() === FALSE)
+			return 0;
 		$result = $selectQuery->get_result();
 
 		$row = $result->fetch_accoc();
@@ -123,14 +128,17 @@ class MusicManager
 		//If count > 0, we return without doing anything further.
 		//Means someone else has song in collection.
 		if($count > 0)
-			return TRUE;
+			return 1;
 		
 		//If count is 0, that means nobody has song in collection.
 		//We should therefore delete it from S3 and remove from DB.
 		$deleteSongQuery = $this->database->prepare("DELETE FROM song WHERE song_id = ?");
 		$deleteSongQuery->bind_param("i", $song_id);
 		
-		return $deleteSongQuery->execute();
+		if($deleteSongQuery->execute() === FALSE)
+			return 0;
+		else
+			return 2;
 	}
 
 	//Selects the title and artist of a user's song.
