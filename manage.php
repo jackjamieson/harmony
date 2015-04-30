@@ -156,12 +156,14 @@ $databaseConnected = $manager->connectToDatabase();
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary">Save Changes</button>
                   </div>
                 </div><!-- /.modal-content -->
               </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
         
+            
+            
             <!-- delete modal !-->
             <div class="modal fade" id="d">
               <div class="modal-dialog">
@@ -173,13 +175,23 @@ $databaseConnected = $manager->connectToDatabase();
                   <div class="modal-body" id="cont">
                     <p><script>
                          $(".list-group-item").click(function(){
-                            //console.log(this.id)
+                            var titsplitd = "";
+                             var artsplitd = "";
+                             artsplitd = this.title.substring(0, this.title.indexOf(" - "));
+                             titsplitd = this.title.substring(this.title.indexOf(" - ")+3, this.title.length);
+                             
+
+                             $("#deleteString").html("Are you sure you want to delete \"" + artsplitd + " - " + titsplitd + "\"");
+                             $("#iddelete").val(this.id);
+
+                             
                          });
                         </script>
-                        
+                        <input type="text" style="display:none;" class="form-control" id="iddelete" aria-describedby="basic-addon1">
+
                         <form action="" method="post">
                          <!-- Table -->
-                      Are you sure you want to delete "Artist - Song Title"?
+                      <div id="deleteString">Are you sure you want to delete "Artist - Song Title"?</div>
                       </form>
                       </p>
                   </div>
