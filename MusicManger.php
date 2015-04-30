@@ -174,6 +174,20 @@ class MusicManager
 		return TRUE;
 	}
 
+	//Returns the S3 location of the input song on success.
+	//Returns FALSE on failure.
+	public function getSongLocation($song_id)
+	{
+		$searchQuery = $this->database->prepare("SELECT location FROM song WHERE song_id=?");
+		$searchQuery->bind_param("i", $song_id);
+		
+		if($searchQuery->execute() === FALSE)
+			return FALSE;
+
+		$row = $searchQuery->get_result()->fetch_assoc();
+		return $row['location'];
+	}
+
 	//Increments the rating of a song by one.
 	public function likeSong($song_id)
 	{
