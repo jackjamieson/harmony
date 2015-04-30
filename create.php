@@ -206,7 +206,6 @@ $databaseConnected = $manager->connectToDatabase();
 
                     }
 
-                    close.onclick = reset;
                 </script>';
 
             }
