@@ -135,29 +135,29 @@ $databaseConnected = $manager->connectToDatabase();
                          });
                         </script>
                         
-                        <form action="" method="post">
+                        <form action="editSong.php" method="post">
                          <!-- Table -->
                       <table class="table" style="width:100%">
                     <tbody>
                         <tr>
-                            <td><b>Artist: </b><input type="text" class="form-control" id="sedit" value="Song Artist" aria-describedby="basic-addon1"></td>
+                            <td><b>Artist: </b><input type="text" name="EditArtist" class="form-control" id="sedit" value="Song Artist" aria-describedby="basic-addon1"></td>
                         </tr>
                         <tr>
-                            <td><b>Title:</b><input type="text" class="form-control" id="tedit" value="Song Title" aria-describedby="basic-addon1">
+                            <td><b>Title:</b><input type="text" name="EditTitle" class="form-control" id="tedit" value="Song Title" aria-describedby="basic-addon1">
                             </td>
                         </tr>
                         
                           </tbody>
                             </table>
                             <!-- hidden id !-->
-                            <input type="text" style="display:none;" class="form-control" id="idedit" aria-describedby="basic-addon1">
-                      </form>
+                            <input type="text" name="EditSongId" style="display:none;" class="form-control" id="idedit" aria-describedby="basic-addon1">
                       
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                   </div>
+		</form>
                 </div><!-- /.modal-content -->
               </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
