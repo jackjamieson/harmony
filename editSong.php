@@ -7,7 +7,7 @@ $manager->connectToDatabase();
 
 $edited = $manager->editSong($_POST['EditSongId'], $_POST['EditTitle'], $_POST['EditArtist']);
 
-header("Location: manage.php?edited=" . $edited);
+header('Location: manage.php?edited=' . $edited);
 die();
 
 ?>

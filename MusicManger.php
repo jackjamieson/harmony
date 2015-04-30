@@ -165,7 +165,8 @@ class MusicManager
 
 		if(!empty($newArtist))
 		{
-			$artistQuery = $this->database->prepare("UPDATE own SET artist = ? WHERE user_id = ? AND song_id = ?");
+			$artistQuery = $this->database->prepare("UPDATE owns SET artist = ? WHERE user_id = ? AND song_id = ?");
+
 			$artistQuery->bind_param("sii", $newArtist, $this->user_id, $song_id);
 			if($artistQuery->execute() === FALSE)
 				return FALSE;
