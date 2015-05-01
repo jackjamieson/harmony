@@ -137,7 +137,7 @@ $databaseConnected = $manager->connectToDatabase();
                         $util->makePlaylistFile($result, $id);
 
                         // make the pls file that we won't be using to make the playlist
-                        $util->makePlaylistFileFull($result, $id);
+                        $util->makePlaylistFileFull($result, $id, $_SESSION['User_id']);
 
                         // Generate a new .liq files on the Linode Server
                         // This sends data to the Icecast server to be streamed.

@@ -80,7 +80,7 @@ if(isset($_POST['Submit'])){
       $util->updatePlaylistFile($result, $roomId);
 
       // update the full file to read the playlist
-      $util->updatePlaylistFileFull($result, $roomId);
+      $util->updatePlaylistFileFull($result, $roomId, $_SESSION['User_id']);
         ?>
         <script>
          parent.upload_completed();

@@ -15,7 +15,7 @@ class Util {
     }
     
     // keep the full listing of songs so we can show the playlist
-    public function makePlaylistFileFull($awsS3UploadResult, $id){
+    public function makePlaylistFileFull($awsS3UploadResult, $id, $u_id){
 
         $result = $awsS3UploadResult;
 
@@ -23,7 +23,7 @@ class Util {
         $playlistUrls = $result['ObjectURL'];
 
         $pls = fopen('liq/' . $id . "-playlist-full.pls", "w") or die("Unable to write!");
-        fwrite($pls, $playlistUrls);
+        fwrite($pls, $playlistUrls . ";" . $u_id);
         fclose($pls);
     }
     
@@ -76,7 +76,7 @@ class Util {
 
     }
     
-    public function updatePlaylistFileFull($awsS3UploadResult, $id){
+    public function updatePlaylistFileFull($awsS3UploadResult, $id, $u_id){
 
       $result = $awsS3UploadResult;
 
@@ -84,7 +84,7 @@ class Util {
       $playlistUrls = "\n" . $result['ObjectURL'];
 
       $pls = fopen('liq/' . $id . "-playlist-full.pls", "a") or die("Unable to write!");
-      fwrite($pls, $playlistUrls);
+      fwrite($pls, $playlistUrls . ";" . $u_id);
       fclose($pls);
 
     }

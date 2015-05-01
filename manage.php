@@ -54,6 +54,10 @@ $databaseConnected = $manager->connectToDatabase();
               document.getElementById("edit_success").style.display="block";
 
             }
+            function delete_success(){
+              document.getElementById("delete_success").style.display="block";
+
+            }
         </script>
             <a name="top"></a>
 
@@ -71,6 +75,7 @@ $databaseConnected = $manager->connectToDatabase();
             <span id="headerAlert"></span>
             <div class="alert alert-warning alert-dismissible" role="alert" id="upload_fail" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Upload failed.</div>
              <div class="alert alert-success alert-dismissible" role="alert" id="edit_success" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Song edited.</div>
+            <div class="alert alert-success alert-dismissible" role="alert" id="delete_success" style="display:none;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Song deleted.</div>
 
             <?php
             // get the edited tags if they present
@@ -83,6 +88,21 @@ $databaseConnected = $manager->connectToDatabase();
                     ?>
                     <script>
                     edit_success();
+                    </script>
+                <?php
+                }
+                
+            }
+
+            // get the deleted tag if its present
+            if(isset($_GET['deleted'])){
+                
+                $value = $_GET['deleted'];
+                
+                if($value == '1'){
+                    ?>
+                    <script>
+                    delete_success();
                     </script>
                 <?php
                 }
@@ -205,7 +225,7 @@ $databaseConnected = $manager->connectToDatabase();
                              titsplitd = this.title.substring(this.title.indexOf(" - ")+3, this.title.length);
                              
 
-                             $("#deleteString").html("Are you sure you want to delete \"" + artsplitd + " - " + titsplitd + "\"");
+                             $("#deleteString").html("Are you sure you want to delete \"" + artsplitd + " - " + titsplitd + "\"?");
                              $("#iddelete").val(this.id);
 
                              

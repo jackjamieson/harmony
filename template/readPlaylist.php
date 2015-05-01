@@ -8,7 +8,8 @@ if(isset($_GET)){
     $handle = fopen('/var/www/html/liq/' . $roomId . '-playlist-full.pls', "r");
     if ($handle) {
         while (($line = fgets($handle)) !== false) {
-            echo $line;
+            $lines = explode(";", $line);
+            echo $lines[0] . " and " . $lines[1];
         }
 
         fclose($handle);
