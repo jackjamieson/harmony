@@ -12,19 +12,19 @@ $connected = $manager->connectToDatabase();
 //Like button pressed
 if(isset($_POST['Up']))
 {
-	$result = $manager->likeSong($_POST['SongId'], $_SESSION['User_id']);
+	$result = $manager->likeSong($_POST['ID'], $_SESSION['User_id']);
 }
 
 //Dislike button pressed
 else if(isset($_POST['Down']))
 {
-	$result = $manager->dislikeSong($_POST['SongId'], $_SESSION['User_id']);
+	$result = $manager->dislikeSong($_POST['ID'], $_SESSION['User_id']);
 }
 
 //Grab button pressed
 else if (isset($_POST['Grab']))
 {
-	$result = $manager->grabSong($_SESSION['User_id'], $_POST['SongId'], $_POST['Title'], $_POST['Artist']);
+	$result = $manager->grabSong($_SESSION['User_id'], $_POST['ID'], $_POST['Song'], $_POST['Artist']);
 }
 
 ?>
