@@ -221,9 +221,34 @@ class MusicManager
 		return $likeQuery->execute();
 	}
 
-	//TODO: Add grab query
-	// Make sure to check if user already has a song at that location.
-	//Ex. They grab the same song twice. If so, do nothing.
+	//Decrements the rating of a song by one.
+	public function dislikeSong($song_id)
+	{
+		$dislikeQuery = $this->database->prepare("UPDATE song SET rating = rating - 1 WHERE song_id = ?");
+		$dislikeQuery->bind_param("i", $song_id);
+		
+		return $dislikeQuery->execute();
+	}
+
+	//Grabs song and adds to user's collection.
+	//Returns 0 on failure
+	//Returns 1 on successful grab
+	//Returns 2 if user already has song in collection.
+	public function grabSong($user_id, $song_id, $title, $artist)
+	{
+		$stmt = "INSERT INTO owns (user_id, song_id, title, artist) VALUES (?,?,?,?)";
+
+		$grabQuery = $this->database->prepare($stmt);
+		$grabQuery->bind_param("iiss", $user_id, $song_id, $title, $artist);
+		if($grabQuery->execute() === TRUE)
+			return 1;
+
+		//If failure, check error code.
+		if($grabQuery->errno === 1062)
+			return 2;
+		else
+			return 0;
+	}
 
 	//Returns an array with the title, artist, and rating of a song
 	//given the location and user_id on success.
