@@ -1,11 +1,13 @@
 <?php
+session_start();
+include "/var/www/html/MusicManger.php";
+$manager = new MusicManager($_SESSION['User_id']);
+$databaseConnected = $manager->connectToDatabase();
+
 
 if(isset($_GET)){
 
-session_start();
-include "MusicManger.php";
-$manager = new MusicManager();
-$databaseConnected = $manager->connectToDatabase($_SESSION['User_id']);
+
 
     $roomId = $_GET['id'];
     //readfile('/var/www/html/liq/' . $roomId . '-playlist-full.pls') or die ("Unable to read playlist.");
@@ -14,9 +16,9 @@ $databaseConnected = $manager->connectToDatabase($_SESSION['User_id']);
     if ($handle) {
         while (($line = fgets($handle)) !== false) {
             $lines = explode(";", $line);
-	    $songInfo = $manager->getUserSongFromLocation($lines[0], $lines[1]);
+	        $songInfo = $manager->getUserSongFromLocation($lines[0], $lines[1]);
 	    
-            echo $songInfo['artist'] . " - " . $songInfo['title'] . " Rating: " . $songInfo['rating'];
+            echo "<b>" . $songInfo['artist'] . "</b> - " . $songInfo['title'] . "<br>Rating: " . $songInfo['rating'] . "<p></p>";
         }
 
         fclose($handle);
