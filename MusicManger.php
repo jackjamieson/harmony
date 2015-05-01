@@ -255,7 +255,7 @@ class MusicManager
 	//Returns FALSE on failure.
 	public function getUserSongFromLocation($location, $user_id)
 	{
-		$stmt = "SELECT owns.title, owns.artist, song.rating FROM song INNER JOIN owns ON song.song_id = owns.song_id WHERE song.location=? AND owns.user_id=?";
+		$stmt = "SELECT owns.title, owns.artist, song.song_id, song.rating FROM song INNER JOIN owns ON song.song_id = owns.song_id WHERE song.location=? AND owns.user_id=?";
 		$query = $this->database->prepare($stmt);
 
 		$query->bind_param("si", $location, $user_id);
