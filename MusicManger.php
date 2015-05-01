@@ -221,6 +221,26 @@ class MusicManager
 		return $likeQuery->execute();
 	}
 
+	//TODO: Add grab query
+	// Make sure to check if user already has a song at that location.
+	//Ex. They grab the same song twice. If so, do nothing.
+
+	//Returns an array with the title, artist, and rating of a song
+	//given the location and user_id on success.
+	//Returns FALSE on failure.
+	public function getUserSongFromLocation($location, $user_id)
+	{
+		$stmt = "SELECT owns.title, owns.artist, song.rating FROM song INNER JOIN owns ON song.song_id = owns.song_id WHERE song.location=? AND owns.user_id=?";
+		$query = $this->database->prepare($stmt);
+
+		$query->bind_param("si", $location, $user_id);
+
+		if($query->execute() === FALSE)
+			return FALSE;
+
+		return $query->get_result()->fetch_assoc();
+	}
+
 }
 
 ?>
