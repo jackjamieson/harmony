@@ -95,8 +95,7 @@ UserManager::checkLogin();
                       </ul>
                     </div>
 
-                    <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Upvote</button>
-                    <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> Downvote</button>
+                    
                     <a href="manage.php"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Leave Room</button></a>
 
 
