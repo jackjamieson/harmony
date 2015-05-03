@@ -5,6 +5,11 @@ session_start();
 include "UserManager.php";
 UserManager::checkLogin();
 
+//Set up the music manager
+include "MusicManger.php";
+$manager = new MusicManager($_SESSION['User_id']);
+$databaseConnected = $manager->connectToDatabase();
+
 ?>
 
 <!DOCTYPE html>
@@ -117,41 +122,13 @@ UserManager::checkLogin();
                     <h4 class="modal-title" id="myModalLabel">Upload New Song</h4>
                   </div>
                   <div class="modal-body">
-                    <div class="alert alert-success" role="alert" id="upload_status" style="display:none;">Song successfully added!</div>
+                    <div class="alert alert-success" role="alert" id="upload_status" style="display:none;">Song added!</div>
                     <div class="alert alert-warning" role="alert" id="failure" style="display:none;">Song must be an MP3! Try transcoding it first.</div>
 
                     <div id="loading" style="display:none;"><center><b>Uploading...</b><br><img src="img/loader.gif"/></center><br></div>
 
                     Add to the playlist:<p>
-                    <script type="text/javascript">
-                    function upload_started(){
-                     document.getElementById("upload_status").style.display="none";
-                    document.getElementById("loading").style.display="block";
 
-                    }
-                    function upload_completed(){
-                     document.getElementById("upload_status").style.display="block";
-                    document.getElementById("loading").style.display="none";
-
-                    }
-
-                    function upload_failed(){
-                        document.getElementById("failure").style.display="block";
-                        document.getElementById("loading").style.display="none";
-
-                    }
-
-                    var close = document.getElementById("closed");
-
-                    function reset() {
-                      document.getElementById("upload_status").style.display="none";
-                        document.getElementById("failed").style.display="none";
-
-
-                    }
-
-                    close.onclick = reset;
-                    </script>
                     </p>
                     <form action="upload_in_room.php?id=<?php echo $gotId; ?>" method="post" enctype="multipart/form-data" target="hidden_upload" onsubmit="upload_started()">
                         <input name="theFile" type="file" />
@@ -172,20 +149,61 @@ UserManager::checkLogin();
 
             <!-- Modal add from library -->
             <div class="modal fade" id="add-lib" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                      
                     <h4 class="modal-title" id="myModalLabel">Select Song from Library</h4>
                   </div>
                   <div class="modal-body">
+                      <div class="alert alert-success" role="alert" id="upload_status2" style="display:none;">Song added!</div>
+                      
+                    <div id="loading2" style="display:none;"><center><b>Adding...</b><br><img src="img/loader.gif"/></center><br></div>
                     Add to the playlist:<p>
 
                     </p>
-                    Select from your library...
-                  </div>
+              <div class="list-group" style="max-height:300px; overflow:auto;">
+              
+		<?php
+		$result = $manager->searchSongs(null, null);
+		//song_id
+		while($row = $result->fetch_assoc())
+		{
+            $the_id = $row['location'];
+            $art = $row['artist'];
+            $tit = $row['title'];
+            
+            
+		echo '<a href="javascript:;" id="' . $the_id . '" title="' . $art . ' - ' . $tit . '" class="list-group-item"><b>'. $row['artist'] . '</b> - ' . $row['title'] . '</a>';
+		}
+		?>
+                  <script>
+                      var s_id = 0;
+                      // this tiny script handles getting the id from the table
+                  $(".list-group-item").click(function(){
+                      //console.log(this.id);
+                      // s_id = this.id;
+                      // console.log(s_id);
+                      $('#songadd').val(this.id);
+
+
+                    });
+                  </script>
+
+            </div>
+            <form action="add_no_upload.php?id=<?php echo $gotId; ?>" method="post" enctype="multipart/form-data" target="hidden_upload2" onsubmit="upload_started()">     
+                <input type="text" name="song" style="display:none;" class="form-control" id="songadd" aria-describedby="basic-addon1">
+            <button type="Submit" name="Submit" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-plus"></span> Add to Playlist</button>
+                      </form>
+                      
+              <iframe id="hidden_upload2" name="hidden_upload2" style="display:none" ></iframe>
+
+                </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" id="closed2" data-dismiss="modal">Close</button>
                   </div>
                 </div>
               </div>
@@ -372,5 +390,47 @@ UserManager::checkLogin();
 						$("#actualUploadinRoom").click();
 					});
 					</script>
+      
+                          <script type="text/javascript">
+                    function upload_started(){
+                     document.getElementById("upload_status").style.display="none";
+                    document.getElementById("loading").style.display="block";
+                    document.getElementById("loading2").style.display="block";
+
+
+                    }
+                    function upload_completed(){
+                     document.getElementById("upload_status").style.display="block";
+                    document.getElementById("upload_status2").style.display="block";
+
+                    document.getElementById("loading").style.display="none";
+                    document.getElementById("loading2").style.display="none";
+
+
+                    }
+                        
+                    
+
+                    function upload_failed(){
+                        document.getElementById("failure").style.display="block";
+                        document.getElementById("loading").style.display="none";
+
+                    }
+
+                    var close = document.getElementById("closed");
+                    var close2 = document.getElementById("closed2");
+
+
+                    function reset() {
+                      document.getElementById("upload_status").style.display="none";
+                        document.getElementById("failure").style.display="none";
+                    document.getElementById("upload_status2").style.display="none";
+
+                    }
+
+                    close.onclick = reset;
+                    close2.onclick = reset;
+
+                    </script>
 
           </html>
