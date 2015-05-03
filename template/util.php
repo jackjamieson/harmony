@@ -88,6 +88,32 @@ class Util {
       fclose($pls);
 
     }
+    
+    public function updatePlaylistFileNoUpload($songUrl, $id){
+
+      //$result = $awsS3UploadResult;
+
+      // update the initial playlist
+      $playlistUrls = "\n" . $songUrl;
+
+      $pls = fopen('liq/' . $id . "-playlist.pls", "a") or die("Unable to write!");
+      fwrite($pls, $playlistUrls);
+      fclose($pls);
+
+    }
+    
+    public function updatePlaylistFileFullNoUpload($songUrl, $id, $u_id){
+
+      //$result = $awsS3UploadResult;
+
+      // update the initial playlist
+      $playlistUrls = "\n" . $songUrl;
+
+      $pls = fopen('liq/' . $id . "-playlist-full.pls", "a") or die("Unable to write!");
+      fwrite($pls, $playlistUrls . ";" . $u_id);
+      fclose($pls);
+
+    }
 }
 
 
