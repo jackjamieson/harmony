@@ -153,8 +153,7 @@ $databaseConnected = $manager->connectToDatabase();
 				
 				if(isset($_POST["add"])){
                         $result = $_POST["urllocation"];// location string
-						//$locationString = "https://user-music-folder.s3.amazonaws.com/Music/" . $awsFileName . ".mp3";
-						
+						//$locationString = "https://user-music-folder.s3.amazonaws.com/Music/" . $awsFileName . ".mp3";						
 						$id = uniqid();// generate unique id for the room
 						
                         $util = new Util();
@@ -286,9 +285,9 @@ $databaseConnected = $manager->connectToDatabase();
 						  </script>
 					</div>
 					
-					<form name="add-playlist" action = "create.php" method = "post">
-						<input type="text" style="display:none;" name="urllocation">
-						<button name = "add" type = "submit" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-plus"></span> Add to Playlist</button>
+					<form action = "create.php" method = "post">
+						<input type="text" style="display:none;" name="urllocation" id="urllocation">
+						<button name = "add" type = "submit" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-plus"></span> Create Playlist</button>
 					</form>
 		
                   </div>
