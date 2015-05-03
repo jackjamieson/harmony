@@ -43,7 +43,7 @@ $databaseConnected = $manager->connectToDatabase();
 
 
             <?php
-
+			$display_more = true;
             error_reporting(E_ALL);
 
 
@@ -145,28 +145,101 @@ $databaseConnected = $manager->connectToDatabase();
 
                         // Run the liquidsoap script on the server
                         $util->runLiqScript($id);
-
                     }
                     else {
-
-
-
-
+						
                     }
-
-
-
-
-
                 }
+				
+				if(isset($_POST["add"])){
+                        $result = $_POST["urllocation"];// location string
+						//$locationString = "https://user-music-folder.s3.amazonaws.com/Music/" . $awsFileName . ".mp3";
+						
+						$id = uniqid();// generate unique id for the room
+						
+                        $util = new Util();
 
+                        // Generate a new .pls on the Linode server
+                        // This contains the mp3 urls on S3.
+                        $util->makePlaylistFileNoUpload($result, $id);
+
+                        // make the pls file that we won't be using to make the playlist
+                        $util->makePlaylistFileFullNoUpload($result, $id, $_SESSION['User_id']);
+
+                        // Generate a new .liq files on the Linode Server
+                        // This sends data to the Icecast server to be streamed.
+                        $util->makeLiqFile($id);
+
+                        // Run the liquidsoap script on the server
+                        $util->runLiqScript($id);
+						
+						?>
+								<script>
+									$('#header').html('Your room has been created, send the link to your friends and make some sweet music.');
+
+								 </script>
+
+						<?php
+
+								echo '
+
+								<p></p>
+								<div class="panel panel-default">
+								<div class="panel-body">
+									<b>Room Created:</b><p></p>
+									<p>Your room is ready:<br>
+						  <a href="http://45.56.101.195/room.php?id=' . $id . '">http://45.56.101.195/room.php?id=' . $id . '</a></p>
+								  </div>
+								</div>';
+
+								// sending emails happens below
+
+							echo '<p></p>
+							<div class="panel panel-default">
+							<div class="panel-body">
+							<b>Email Room URL to Friends:</b><p></p>
+							<p><form action="ses_test.php" method="post" target="hidden_send" onsubmit="alertUser()">
+								<input type="text" name="emailAddress[]">
+								<input type="text" name="url" hidden="hidden" value="http://45.56.101.195/room.php?id=' . $id . '">
+								<input name="btnButton" type="button" value="+" onClick="JavaScript:fncCreateElement();"><br>
+								<span id="mySpan"></span>
+								<br><input name="btnSubmit" type="submit" value="Submit">
+							</form>
+
+							<iframe id="hidden_send" name="hidden_send" style="display:none" ></iframe>
+
+							<br>
+							</div>
+							</div>
+
+
+							<script language="javascript"> //script for sending email
+								function fncCreateElement()
+								{
+									var mySpan = document.getElementById("mySpan");
+
+								   var myElement1 = document.createElement("input");
+								   myElement1.setAttribute("type","text");
+								   myElement1.setAttribute("name","emailAddress[]");
+								   mySpan.appendChild(myElement1);
+
+								   var myElement2 = document.createElement("br");
+								   mySpan.appendChild(myElement2);
+								}
+
+								function alertUser(){
+									 document.getElementById("status").style.display="block";
+								}
+							</script> ';
+						$display_more = false;
+                }
                 ?>
 
             <?php
 
             //$sesClient = new $aws->authSES();
-
-            if(!isset($_POST['Submit'])){
+			
+            if(!isset($_POST['Submit']) && $display_more){
             ?>
               <p></p>
                 <div class="panel panel-default">
@@ -194,7 +267,7 @@ $databaseConnected = $manager->connectToDatabase();
 						//song_id
 						while($row = $result->fetch_assoc())
 						{
-							$the_id = $row['song_id'];
+							$the_id = $row['location'];
 							$art = $row['artist'];
 							$tit = $row['title'];
 							
@@ -208,13 +281,16 @@ $databaseConnected = $manager->connectToDatabase();
 							  //console.log(this.id);
 							  // s_id = this.id;
 							  // console.log(s_id);
-							  $('#edit').attr('data-target','#e');
-							  $('#delete').attr('data-target','#d');
+							  $("#urllocation").val(this.id);
 							});
 						  </script>
-
 					</div>
-					<a href="#" id="add-playlist" data-toggle="modal" data-target="#" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-plus"></span> Add to Playlist</a>
+					
+					<form name="add-playlist" action = "create.php" method = "post">
+						<input type="text" style="display:none;" name="urllocation">
+						<button name = "add" type = "submit" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-plus"></span> Add to Playlist</button>
+					</form>
+		
                   </div>
                 </div>
 
@@ -234,10 +310,10 @@ $databaseConnected = $manager->connectToDatabase();
 
                     }
 
-                </script>';
+                </script>
 			<?php
             }
-            else {
+            if (isset($_POST['Submit']) && $display_more) {
 
                 //display room id url
                 if(preg_match("/\.(mp3)$/", $fileName)){
