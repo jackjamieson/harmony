@@ -32,8 +32,6 @@ class MusicManager
 	//If query successful, returns the query result. Else returns false.
 	public function searchSongs($title, $artist)
 	{
-		//TODO:Add location.
-
 		$queryString = "SELECT owns.song_id, owns.title, owns.artist, song.location FROM owns INNER JOIN song ON owns.song_id=song.song_id WHERE owns.user_id=? AND owns.title LIKE ? AND owns.artist LIKE ? ORDER BY artist, title";
 
 		//If a parameter is empty, do not use it to narrow search results.
@@ -54,6 +52,7 @@ class MusicManager
 			return FALSE;
 	}
 
+	//Adds a new song to the database.
 	public function addSong($title, $artist, $album, $genre, $location)
 	{
 		//Title and location cannot be null
@@ -161,6 +160,7 @@ class MusicManager
 	//Selects the title and artist of a user's song.
 	//Returns an array with columns ['title'] and ['artist'] on success.
 	//Returns FALSE on failure.
+	//TODO: Unsure if still used.
 	public function getSongInfo($song_id)
 	{
 		$searchQuery = $this->database->prepare("SELECT title, artist FROM owns WHERE user_id = ? AND song_id = ?");
@@ -214,34 +214,77 @@ class MusicManager
 		return $row['location'];
 	}
 
-	//Increments the rating of a song by one.
-	public function likeSong($song_id)
+	//Returns 0 on failure.
+	//Returns 1 on success.
+	//Returns 2 if user has already voted.
+	public function checkIfLiked($song_id, $owner_id)
 	{
-		$likeQuery = $this->database->prepare("UPDATE song SET rating = rating + 1 WHERE song_id = ?");
-		$likeQuery->bind_param("i", $song_id);
 		
-		return $likeQuery->execute();
+		//Check if user has liked the song already.
+		$checkStmt = "SELECT COUNT(user_id, song_id, owner_id) FROM likes";
+		$query = $this->database->prepare($checkStmt);
+		$query->bind_param("iii", $this->user_id, $song_id, $owner_id);
+		
+		if($query->execute() === FALSE)
+			return 0;
+		
+		//Return '1' if user hasn't liked/disliked song.
+		if($query->get_result()->fetch_assoc()['count'] === 0)
+			return 1;
+
+		//Return '2' if user has already liked this song.
+		else
+			return 2;
+	}
+
+	//Returns TRUE on success, FALSE on failure
+	public function likeSong($song_id, $owner_id)
+	{
+		//TODO: Rating no longer in song. Rework database in future.
+		//If user hasn't liked song, first increment the song's rating.
+		$query = $this->database->prepare("UPDATE owns SET rating = rating + 1 WHERE song_id = ? AND user_id = ?");
+		$query->bind_param("ii", $song_id, $owner_id);
+
+		if($query->execute() === FALSE)
+			return FALSE;
+
+		//Add new entry to likes table
+		$stmt = "INSERT INTO likes(user_id, song_id, owner_id, like_value) VALUES (?,?,?)";
+		$query = $this->database->prepare($stmt);
+		$query->bind_param("iii", $this->user_id, $song_id, $owner_id, 1);	
+		return $query->execute();
 	}
 
 	//Decrements the rating of a song by one.
-	public function dislikeSong($song_id)
+	//Returns TRUE on success, FALSE on failure.
+	public function dislikeSong($song_id, $owner_id)
 	{
-		$dislikeQuery = $this->database->prepare("UPDATE song SET rating = rating - 1 WHERE song_id = ?");
-		$dislikeQuery->bind_param("i", $song_id);
-		
-		return $dislikeQuery->execute();
+		//TODO: Rating no longer in song. Rework database in future.
+		//If user hasn't liked song, first increment the song's rating.
+		$query = $this->database->prepare("UPDATE owns SET rating = rating - 1 WHERE song_id = ? AND user_id = ?");
+		$query->bind_param("ii", $song_id, $owner_id);
+
+		if($query->execute() === FALSE)
+			return FALSE;
+
+		//Add new entry to likes table, with a 0 value for dislike.
+		$stmt = "INSERT INTO likes(user_id, song_id, owner_id, like_value) VALUES (?,?,?)";
+		$query = $this->database->prepare($stmt);
+		$query->bind_param("iii", $this->user_id, $song_id, $owner_id, 0);
+		return $query->execute();
+
 	}
 
 	//Grabs song and adds to user's collection.
 	//Returns 0 on failure
 	//Returns 1 on successful grab
 	//Returns 2 if user already has song in collection.
-	public function grabSong($user_id, $song_id, $title, $artist)
+	public function grabSong($song_id, $title, $artist)
 	{
 		$stmt = "INSERT INTO owns (user_id, song_id, title, artist) VALUES (?,?,?,?)";
 
 		$grabQuery = $this->database->prepare($stmt);
-		$grabQuery->bind_param("iiss", $user_id, $song_id, $title, $artist);
+		$grabQuery->bind_param("iiss", $this->user_id, $song_id, $title, $artist);
 		if($grabQuery->execute() === TRUE)
 			return 1;
 
@@ -257,7 +300,7 @@ class MusicManager
 	//Returns FALSE on failure.
 	public function getUserSongFromLocation($location, $user_id)
 	{
-		$stmt = "SELECT owns.title, owns.artist, song.song_id, song.rating FROM song INNER JOIN owns ON song.song_id = owns.song_id WHERE song.location=? AND owns.user_id=?";
+		$stmt = "SELECT owns.title, owns.artist, owns.song_id, owns.rating FROM song INNER JOIN owns ON song.song_id = owns.song_id WHERE song.location=? AND owns.user_id=?";
 		$query = $this->database->prepare($stmt);
 
 		$query->bind_param("si", $location, $user_id);
