@@ -221,7 +221,7 @@ class MusicManager
 	{
 		
 		//Check if user has liked the song already.
-		$checkStmt = "SELECT COUNT(user_id, song_id, owner_id) FROM likes";
+		$checkStmt = "SELECT COUNT(user_id, song_id, owner_id) FROM likes WHERE user_id=? AND song_id=? AND owner_id=?";
 		$query = $this->database->prepare($checkStmt);
 		$query->bind_param("iii", $this->user_id, $song_id, $owner_id);
 		
