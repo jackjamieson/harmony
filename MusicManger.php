@@ -249,9 +249,9 @@ class MusicManager
 			return FALSE;
 
 		//Add new entry to likes table
-		$stmt = "INSERT INTO likes(user_id, song_id, owner_id, like_value) VALUES (?,?,?)";
+		$stmt = "INSERT INTO likes(user_id, song_id, owner_id, like_value) VALUES (?,?,?,?)";
 		$query = $this->database->prepare($stmt);
-		$query->bind_param("iii", $this->user_id, $song_id, $owner_id, 1);	
+		$query->bind_param("iiii", $this->user_id, $song_id, $owner_id, 1);	
 		return $query->execute();
 	}
 
@@ -268,9 +268,9 @@ class MusicManager
 			return FALSE;
 
 		//Add new entry to likes table, with a 0 value for dislike.
-		$stmt = "INSERT INTO likes(user_id, song_id, owner_id, like_value) VALUES (?,?,?)";
+		$stmt = "INSERT INTO likes(user_id, song_id, owner_id, like_value) VALUES (?,?,?,?)";
 		$query = $this->database->prepare($stmt);
-		$query->bind_param("iii", $this->user_id, $song_id, $owner_id, 0);
+		$query->bind_param("iiii", $this->user_id, $song_id, $owner_id, 0);
 		return $query->execute();
 
 	}
