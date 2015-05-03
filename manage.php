@@ -128,8 +128,9 @@ $databaseConnected = $manager->connectToDatabase();
             $the_id = $row['song_id'];
             $art = $row['artist'];
             $tit = $row['title'];
+            $rat = $row['rating'];
             
-		echo '<a href="javascript:;" id="' . $the_id . '" title="' . $art . ' - ' . $tit . '" class="list-group-item"><b>'. $row['artist'] . '</b> - ' . $row['title'] . '</a>';
+		echo '<a href="javascript:;" id="' . $the_id . '" title="' . $art . ' - ' . $tit . '" class="list-group-item"><b>'. $row['artist'] . '</b> - ' . $row['title'] . '<br>Rating: ' . $rat . '</a>';
 		}
 		?>
                   <script>
