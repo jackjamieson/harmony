@@ -27,6 +27,31 @@ class Util {
         fclose($pls);
     }
     
+	  public function makePlaylistFileNoUpload($songURL, $id){
+
+        //$result = $awsS3UploadResult;
+
+        // create the initial playlist finial
+        $playlistUrls = $songURL;
+
+        $pls = fopen('liq/' . $id . "-playlist.pls", "w") or die("Unable to write!");
+        fwrite($pls, $playlistUrls);
+        fclose($pls);
+    }
+    
+    // keep the full listing of songs so we can show the playlist
+    public function makePlaylistFileFullNoUpload($songURL, $id, $u_id){
+
+        //$result = $awsS3UploadResult;
+
+        // create the initial playlist finial
+        $playlistUrls = $songURL;
+
+        $pls = fopen('liq/' . $id . "-playlist-full.pls", "w") or die("Unable to write!");
+        fwrite($pls, $playlistUrls . ";" . $u_id);
+        fclose($pls);
+    }
+    
     
     public function makeLiqFile($id){
 

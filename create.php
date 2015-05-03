@@ -167,7 +167,7 @@ $databaseConnected = $manager->connectToDatabase();
             //$sesClient = new $aws->authSES();
 
             if(!isset($_POST['Submit'])){
-                echo '
+            ?>
               <p></p>
                 <div class="panel panel-default">
                 <div class="panel-body">
@@ -186,7 +186,35 @@ $databaseConnected = $manager->connectToDatabase();
                 <div class="panel panel-default">
                 <div class="panel-body">
                     <b>Select a previously uploaded song:</b>
+					<p></p>
+					<div class="list-group" style="max-height:300px; overflow:auto;">
+              
+					<?php
+						$result = $manager->searchSongs(null, null);
+						//song_id
+						while($row = $result->fetch_assoc())
+						{
+							$the_id = $row['song_id'];
+							$art = $row['artist'];
+							$tit = $row['title'];
+							
+						echo '<a href="javascript:;" id="' . $the_id . '" title="' . $art . ' - ' . $tit . '" class="list-group-item"><b>'. $row['artist'] . '</b> - ' . $row['title'] . '</a>';
+						}
+					?>
+						  <script>
+							  var s_id = 0;
+							  // this tiny script handles getting the id from the table
+							$(".list-group-item").click(function(){
+							  //console.log(this.id);
+							  // s_id = this.id;
+							  // console.log(s_id);
+							  $('#edit').attr('data-target','#e');
+							  $('#delete').attr('data-target','#d');
+							});
+						  </script>
 
+					</div>
+					<a href="#" id="add-playlist" data-toggle="modal" data-target="#" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-plus"></span> Add to Playlist</a>
                   </div>
                 </div>
 
@@ -207,7 +235,7 @@ $databaseConnected = $manager->connectToDatabase();
                     }
 
                 </script>';
-
+			<?php
             }
             else {
 
