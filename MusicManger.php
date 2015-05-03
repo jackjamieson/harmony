@@ -32,7 +32,7 @@ class MusicManager
 	//If query successful, returns the query result. Else returns false.
 	public function searchSongs($title, $artist)
 	{
-		$queryString = "SELECT owns.song_id, owns.title, owns.artist, song.location FROM owns INNER JOIN song ON owns.song_id=song.song_id WHERE owns.user_id=? AND owns.title LIKE ? AND owns.artist LIKE ? ORDER BY artist, title";
+		$queryString = "SELECT owns.song_id, owns.title, owns.artist, song.location, owns.rating FROM owns INNER JOIN song ON owns.song_id=song.song_id WHERE owns.user_id=? AND owns.title LIKE ? AND owns.artist LIKE ? ORDER BY artist, title";
 
 		//If a parameter is empty, do not use it to narrow search results.
 		if(empty($title))
