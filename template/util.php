@@ -84,7 +84,7 @@ class Util {
     public function runLiqScript($id){
             // timelimit is install on the Linode.  It tells the script to terminate after a set time
             // right now 300 is 5 minutes, just for testing.  Should probably be a couple hours or something
-            shell_exec('timelimit -p -t 600 liquidsoap liq/' . $id . '.liq > /dev/null &');
+            shell_exec('timelimit -p -t 1800 liquidsoap liq/' . $id . '.liq > /dev/null &');
 
     }
 

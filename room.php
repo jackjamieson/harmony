@@ -68,8 +68,8 @@ $databaseConnected = $manager->connectToDatabase();
                   $("#song").load("template/getCurrentSong.php?id=' . $gotId . '");
 
                 }
-                setInterval(recp,5000);
-                setInterval(getCurr,5000);
+                setInterval(recp,3000);
+                setInterval(getCurr,3000);
 
 
                 </script>
