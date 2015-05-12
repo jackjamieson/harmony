@@ -80,7 +80,7 @@ $databaseConnected = $manager->connectToDatabase();
 
                 // display the playlist
                 echo '<div class="well"><h4><b>Now Playing:</b><p><div id="song"></div></h4>
-                <p><b>Playlist:</b><br><div id="playlist" style="white-space:pre"></div></div>';
+                <p><h4><b>Playlist:</b></h4><div id="playlist" style="white-space:pre"></div></div>';
 
               // draw the audio player and populate it with the appropriate stream
               echo '<p><audio autoplay="" controls="controls" preload="auto" name="media">
